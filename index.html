@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#1a1a1a">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ELOHIMS Quotes">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkVMT0hJTVMgUXVvdGUgR2VuZXJhdG9yIiwKICAic2hvcnRfbmFtZSI6ICJFTE9ISU1TIiwKICAic3RhcnRfdXJsIjogIi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMxYTFhMWEiLAogICJ0aGVtZV9jb2xvciI6ICIjMWExYTFhIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxOTIgMTkyJyUzRSUzQ3JlY3Qgd2lkdGg9JzE5MicgaGVpZ2h0PScxOTInIGZpbGw9JyUyMzFhMWExYScvJTNFJTNDdGV4dCB4PSc1MCUyNScgeT0nNTAlMjUnIGZvbnQtc2l6ZT0nODAnIGZpbGw9JyUyM2Q0YWYzNycgdGV4dC1hbmNob3I9J21pZGRsZScgZHk9Jy4zZW0nJTNFRSUzQy90ZXh0JTNFJTNDL3N2ZyUzRSIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJyUzRSUzQ3JlY3Qgd2lkdGg9JzUxMicgaGVpZ2h0PSc1MTInIGZpbGw9JyUyMzFhMWExYScvJTNFJTNDdGV4dCB4PSc1MCUyNScgeT0nNTAlMjUnIGZvbnQtc2l6ZT0nMjAwJyBmaWxsPSclMjNkNGFmMzcnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGR5PScuM2VtJyUzRUUlM0MvdGV4dCUzRSUzQy9zdmclM0UiLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9">
+    <title>ELOHIMS Quote Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #d4af37;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: clamp(1.5em, 5vw, 2.5em);
+            font-weight: 300;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #fff;
+            font-size: clamp(0.75em, 2vw, 0.9em);
+            opacity: 0.8;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        @media (min-width: 1024px) {
+            .main-content {
+                grid-template-columns: 380px 1fr;
+                gap: 30px;
+                padding: 30px;
+            }
+        }
+
+        .upload-section {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px dashed #d4af37;
+            height: fit-content;
+        }
+
+        .section-title {
+            font-size: clamp(1em, 3vw, 1.2em);
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            font-weight: 600;
+            border-bottom: 2px solid #d4af37;
+            padding-bottom: 8px;
+        }
+
+        .upload-box {
+            background: white;
+            border: 2px dashed #ccc;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 15px;
+        }
+
+        .upload-box:hover {
+            border-color: #d4af37;
+            background: #fffef8;
+        }
+
+        .upload-box.has-image {
+            border-color: #4caf50;
+            background: #f1f8f4;
+        }
+
+        .upload-preview {
+            max-width: 100%;
+            max-height: 120px;
+            margin-top: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .upload-preview.visible {
+            display: block;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .quotes-input {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9em;
+            resize: vertical;
+            margin-bottom: 12px;
+        }
+
+        .quotes-input:focus {
+            outline: none;
+            border-color: #d4af37;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .quick-btn {
+            padding: 10px;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .quick-btn:hover, .quick-btn:active {
+            border-color: #d4af37;
+            background: #fffef8;
+        }
+
+        .controls-section {
+            margin-top: 20px;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+            font-weight: 500;
+            font-size: 0.85em;
+        }
+
+        .control-group select,
+        .control-group input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            padding: 0;
+        }
+
+        .control-group input[type="color"] {
+            width: 100%;
+            height: 40px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .align-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+        .align-btn {
+            padding: 8px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            font-size: 0.85em;
+        }
+
+        .align-btn:hover, .align-btn:active {
+            border-color: #d4af37;
+        }
+
+        .align-btn.active {
+            background: #d4af37;
+            color: white;
+            border-color: #d4af37;
+        }
+
+        .preview-section {
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .canvas-wrapper {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+
+        .canvas-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            background: #000;
+        }
+
+        .export-canvas {
+            width: 1080px;
+            height: 1080px;
+            position: relative;
+            background: #f0f0f0;
+            transform-origin: top left;
+        }
+
+        .canvas-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .quote-box {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            border: 3px solid #8B0000;
+            border-radius: 25px;
+            padding: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .quote-text {
+            font-size: 42px;
+            line-height: 1.6;
+            color: #1a1a1a;
+            font-weight: 600;
+            word-wrap: break-word;
+            max-width: 100%;
+        }
+
+        .placeholder-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 1.1em;
+            background: rgba(255,255,255,0.9);
+            z-index: 10;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .preview-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border-top: 2px solid #f0f0f0;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            padding: 8px 16px;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+
+        .nav-btn:hover, .nav-btn:active {
+            background: #d4af37;
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .quote-counter {
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9em;
+        }
+
+        .export-section {
+            padding: 0 20px 20px 20px;
+        }
+
+        .export-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        @media (min-width: 640px) {
+            .export-options {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .option-group {
+            background: #fafafa;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .option-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            font-size: 0.85em;
+            color: #333;
+        }
+
+        .option-group select {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9em;
+        }
+
+        .export-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #d4af37 0%, #c9a12c 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        .export-btn:hover, .export-btn:active {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .export-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .export-btn.loading {
+            background: #666;
+        }
+
+        .status-message {
+            text-align: center;
+            margin-top: 12px;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.9em;
+            display: none;
+        }
+
+        .status-message.success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .status-message.error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
+        .status-message.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            display: block;
+        }
+
+        .collapsible-section {
+            border-top: 1px solid #e0e0e0;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .collapsible-header {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .collapsible-content.open {
+            max-height: 2000px;
+        }
+
+        .toggle-icon {
+            transition: transform 0.3s;
+        }
+
+        .toggle-icon.open {
+            transform: rotate(180deg);
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 5px;
+            }
+
+            .container {
+                border-radius: 8px;
+            }
+
+            header {
+                padding: 15px;
+            }
+
+            .main-content {
+                padding: 15px;
+                gap: 15px;
+            }
+
+            .upload-section,
+            .preview-section {
+                padding: 15px;
+            }
+
+            .export-section {
+                padding: 0 15px 15px 15px;
+            }
+        }
+
+        .install-prompt {
+            background: linear-gradient(135deg, #d4af37 0%, #c9a12c 100%);
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .install-prompt.show {
+            display: flex;
+        }
+
+        .install-btn {
+            background: white;
+            color: #1a1a1a;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .close-prompt {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+            padding: 0 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="installPrompt" class="install-prompt">
+        <span>📱 Install ELOHIMS Quote Generator for offline access</span>
+        <div>
+            <button id="installBtn" class="install-btn">Install</button>
+            <button id="closePrompt" class="close-prompt">×</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>ELOHIMS</h1>
+            <p>Quote Generator — Professional Background-Based Formatter</p>
+        </header>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <div class="upload-section">
+                    <h2 class="section-title">📁 Upload & Input</h2>
+                    
+                    <div class="upload-box" id="uploadBox">
+                        <input type="file" id="bgInput" accept="image/*">
+                        <div>
+                            <p style="font-size: 2em; margin-bottom: 8px;">📸</p>
+                            <p style="font-weight: 600; margin-bottom: 5px;">Upload Background</p>
+                            <p style="font-size: 0.85em; color: #666;">PNG or JPG</p>
+                        </div>
+                        <img id="uploadPreview" class="upload-preview">
+                    </div>
+
+                    <label for="quotesInput" style="font-weight: 600; margin-bottom: 6px; display: block;">Enter Quotes:</label>
+                    <textarea 
+                        id="quotesInput" 
+                        class="quotes-input" 
+                        placeholder="One quote per line..."
+                    ></textarea>
+
+                    <div class="quick-actions">
+                        <button class="quick-btn" id="clearBtn">🗑️ Clear All</button>
+                        <button class="quick-btn" id="sampleBtn">✨ Sample</button>
+                    </div>
+
+                    <div class="controls-section">
+                        <div class="collapsible-section">
+                            <div class="collapsible-header" onclick="toggleSection('boxControls')">
+                                <h3 class="section-title" style="margin: 0; border: none; padding: 0;">🎨 Quote Box Style</h3>
+                                <span class="toggle-icon" id="boxControlsIcon">▼</span>
+                            </div>
+                            <div class="collapsible-content open" id="boxControls">
+                                <div class="control-group">
+                                    <label>Box Width: <span id="boxWidthValue">70%</span></label>
+                                    <input type="range" id="boxWidth" min="50" max="90" value="70">
+                                </div>
+
+                                <div class="control-group">
+                                    <label>Box Height: <span id="boxHeightValue">35%</span></label>
+                                    <input type="range" id="boxHeight" min="25" max="50" value="35">
+                                </div>
+
+                                <div class="control-group">
+                                    <label>Horizontal: <span id="boxHPosValue">Center</span></label>
+                                    <input type="range" id="boxHPos" min="0" max="100" value="50">
+                                </div>
+
+                                <div class="control-group">
+                                    <label>Vertical: <span id="boxVPosValue">Center</span></label>
+                                    <input type="range" id="boxVPos" min="0" max="100" value="50">
+                                </div>
+
+                                <div class="control-group">
+                                    <label>Box Color</label>
+                                    <input type="color" id="boxBgColor" value="#ffffff">
+                                </div>
+
+                                <div class="control-group">
+                                    <label>Opacity: <span id="boxOpacityValue">95%</span></label>
+                                    <input type="range" id="boxOpacity" min="50" max="100" value="95">
+                                </div>
+
+                                <div class="control-group">
+                                    <label>Border Color</label>
+                                    <input type="color" id="borderColor" value="#8B0000">
+                                </div>
+
+                                <div class="control-group">
+                                    <label>Border: <span id="borderWidthValue">3px</span></label>
+                                    <input type="range" id="borderWidth" min="0" max="10" value="3">
+                                </div>
+
+                                <div class="control-group">
+                                    <label>Corners: <span id="cornerRadiusValue">25px</span></label>
+                                    <input type="range" id="cornerRadius" min="0" max="50" value="25">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="collapsible-section">
+                            <div class="collapsible-header" onclick="toggleSection('textControls')">
+                                <h3 class="section-title" style="margin: 0; border: none; padding: 0;">✍️ Text Style</h3>
+                                <span class="toggle-icon" id="textControlsIcon">▼</span>
+                            </div>
+                            <div class="collapsible-content open" id="textControls">
+                                <div class="control-group">
+                                    <label>Font Family</label>
+                                    <select id="fontFamily">
+                                        <option value="Arial, sans-serif">Arial</option>
+                                        <option value="'Times New Roman', serif">Times New Roman</option>
+                                        <option value="Georgia, serif">Georgia</option>
+                                        <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+                                        <option value="Verdana, sans-serif">Verdana</option>
+                                        <option value="'Impact', sans-serif">Impact</option>
+                                        <option value="'Comic Sans MS', cursive">Comic Sans</option>
+                                        <option value="'Courier New', monospace">Courier New</option>
+                                    </select>
+                                </div>
+
+                                <div class="control-group">
+                                    <label>Size: <span id="fontSizeValue">42px</span></label>
+                                    <input type="range" id="fontSize" min="24" max="72" value="42">
+                                </div>
+
+                                <div class="control-group">
+                                    <label>Font Color</label>
+                                    <input type="color" id="fontColor" value="#1a1a1a">
+                                </div>
+
+                                <div class="control-group">
+                                    <label>Weight: <span id="fontWeightValue">600</span></label>
+                                    <input type="range" id="fontWeight" min="300" max="900" step="100" value="600">
+                                </div>
+
+                                <div class="control-group">
+                                    <label>Line Height: <span id="lineHeightValue">1.6</span></label>
+                                    <input type="range" id="lineHeight" min="1" max="2.5" step="0.1" value="1.6">
+                                </div>
+
+                                <div class="control-group">
+                                    <label>Alignment</label>
+                                    <div class="align-buttons">
+                                        <button class="align-btn" data-align="left">Left</button>
+                                        <button class="align-btn active" data-align="center">Center</button>
+                                        <button class="align-btn" data-align="right">Right</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="preview-section">
+                    <h2 class="section-title">👁️ Live Preview</h2>
+                    
+                    <div class="canvas-wrapper">
+                        <div class="canvas-container" id="canvasContainer">
+                            <div class="export-canvas" id="exportCanvas">
+                                <img id="canvasBg" class="canvas-background" style="display: none;">
+                                <div id="quoteBoxContainer">
+                                    <div class="quote-box" id="quoteBox">
+                                        <div class="quote-text" id="quoteText"></div>
+                                    </div>
+                                </div>
+                                <div class="placeholder-overlay" id="placeholderOverlay">
+                                    Upload background and enter quotes
+                                </div>
+                            </div>
+                        </div>
+                        <div class="preview-controls">
+                            <button class="nav-btn" id="prevBtn" disabled>← Prev</button>
+                            <div class="quote-counter" id="quoteCounter">No quotes</div>
+                            <button class="nav-btn" id="nextBtn" disabled>Next →</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="export-section">
+            <div class="export-options">
+                <div class="option-group">
+                    <label>Format</label>
+                    <select id="exportFormat">
+                        <option value="png">PNG (Best Quality)</option>
+                        <option value="jpeg">JPEG (Smaller)</option>
+                    </select>
+                </div>
+                <div class="option-group">
+                    <label>Size</label>
+                    <select id="exportSize">
+                        <option value="1080">1080x1080 (Instagram)</option>
+                        <option value="1200">1200x1200 (High Res)</option>
+                        <option value="800">800x800 (Web)</option>
+                    </select>
+                </div>
+            </div>
+            <button class="export-btn" id="exportBtn" disabled>
+                📦 Generate & Download ZIP
+            </button>
+            <div class="status-message" id="statusMessage"></div>
+        </div>
+    </div>
+
+    <script>
+        // PWA Install prompt
+        let deferredPrompt;
+        const installPrompt = document.getElementById('installPrompt');
+        const installBtn = document.getElementById('installBtn');
+        const closePrompt = document.getElementById('closePrompt');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installPrompt.classList.add('show');
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                installPrompt.classList.remove('show');
+            }
+        });
+
+        closePrompt.addEventListener('click', () => {
+            installPrompt.classList.remove('show');
+        });
+
+        // Collapsible sections
+        function toggleSection(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById(id + 'Icon');
+            content.classList.toggle('open');
+            icon.classList.toggle('open');
+        }
+
+        let backgroundImage = null;
+        let quotes = [];
+        let currentQuoteIndex = 0;
+        
+        let settings = {
+            boxWidth: 70,
+            boxHeight: 35,
+            boxHPos: 50,
+            boxVPos: 50,
+            boxBgColor: '#ffffff',
+            boxOpacity: 95,
+            borderColor: '#8B0000',
+            borderWidth: 3,
+            cornerRadius: 25,
+           fontFamily: 'Arial, sans-serif',
+            fontSize: 42,
+            fontColor: '#1a1a1a',
+            fontWeight: 600,
+            lineHeight: 1.6,
+            textAlign: 'center'
+        };
+
+        const uploadBox = document.getElementById('uploadBox');
+        const bgInput = document.getElementById('bgInput');
+        const uploadPreview = document.getElementById('uploadPreview');
+        const quotesInput = document.getElementById('quotesInput');
+        const canvasBg = document.getElementById('canvasBg');
+        const quoteBox = document.getElementById('quoteBox');
+        const quoteText = document.getElementById('quoteText');
+        const exportCanvas = document.getElementById('exportCanvas');
+        const canvasContainer = document.getElementById('canvasContainer');
+        const placeholderOverlay = document.getElementById('placeholderOverlay');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const quoteCounter = document.getElementById('quoteCounter');
+        const exportBtn = document.getElementById('exportBtn');
+        const statusMessage = document.getElementById('statusMessage');
+        const clearBtn = document.getElementById('clearBtn');
+        const sampleBtn = document.getElementById('sampleBtn');
+
+        function scaleCanvas() {
+            const containerWidth = canvasContainer.offsetWidth;
+            const scale = containerWidth / 1080;
+            exportCanvas.style.transform = `scale(${scale})`;
+            canvasContainer.style.height = (1080 * scale) + 'px';
+        }
+
+        window.addEventListener('resize', scaleCanvas);
+        setTimeout(scaleCanvas, 100);
+
+        uploadBox.addEventListener('click', () => bgInput.click());
+        
+        bgInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    backgroundImage = e.target.result;
+                    uploadPreview.src = backgroundImage;
+                    uploadPreview.classList.add('visible');
+                    uploadBox.classList.add('has-image');
+                    canvasBg.src = backgroundImage;
+                    canvasBg.style.display = 'block';
+                    updatePreview();
+                    updateExportButton();
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        quotesInput.addEventListener('input', () => {
+            const text = quotesInput.value.trim();
+            quotes = text.split('\n').filter(q => q.trim() !== '');
+            currentQuoteIndex = 0;
+            updateNavigation();
+            updatePreview();
+            updateExportButton();
+        });
+
+        clearBtn.addEventListener('click', () => {
+            quotesInput.value = '';
+            quotes = [];
+            currentQuoteIndex = 0;
+            updateNavigation();
+            updatePreview();
+            updateExportButton();
+        });
+
+        sampleBtn.addEventListener('click', () => {
+            quotesInput.value = `Faith moves mountains\nTrust builds bridges\nGod's grace is sufficient\nEvery challenge is growth\nLet your light shine`;
+            quotesInput.dispatchEvent(new Event('input'));
+        });
+
+        document.getElementById('boxWidth').addEventListener('input', (e) => {
+            settings.boxWidth = e.target.value;
+            document.getElementById('boxWidthValue').textContent = e.target.value + '%';
+            updatePreview();
+        });
+
+        document.getElementById('boxHeight').addEventListener('input', (e) => {
+            settings.boxHeight = e.target.value;
+            document.getElementById('boxHeightValue').textContent = e.target.value + '%';
+            updatePreview();
+        });
+
+        document.getElementById('boxHPos').addEventListener('input', (e) => {
+            settings.boxHPos = e.target.value;
+            document.getElementById('boxHPosValue').textContent = e.target.value + '%';
+            updatePreview();
+        });
+
+        document.getElementById('boxVPos').addEventListener('input', (e) => {
+            settings.boxVPos = e.target.value;
+            document.getElementById('boxVPosValue').textContent = e.target.value + '%';
+            updatePreview();
+        });
+
+        document.getElementById('boxBgColor').addEventListener('input', (e) => {
+            settings.boxBgColor = e.target.value;
+            updatePreview();
+        });
+
+        document.getElementById('boxOpacity').addEventListener('input', (e) => {
+            settings.boxOpacity = e.target.value;
+            document.getElementById('boxOpacityValue').textContent = e.target.value + '%';
+            updatePreview();
+        });
+
+        document.getElementById('borderColor').addEventListener('input', (e) => {
+            settings.borderColor = e.target.value;
+            updatePreview();
+        });
+
+        document.getElementById('borderWidth').addEventListener('input', (e) => {
+            settings.borderWidth = e.target.value;
+            document.getElementById('borderWidthValue').textContent = e.target.value + 'px';
+            updatePreview();
+        });
+
+        document.getElementById('cornerRadius').addEventListener('input', (e) => {
+            settings.cornerRadius = e.target.value;
+            document.getElementById('cornerRadiusValue').textContent = e.target.value + 'px';
+            updatePreview();
+        });
+
+        document.getElementById('fontFamily').addEventListener('change', (e) => {
+            settings.fontFamily = e.target.value;
+            updatePreview();
+        });
+
+        document.getElementById('fontSize').addEventListener('input', (e) => {
+            settings.fontSize = e.target.value;
+            document.getElementById('fontSizeValue').textContent = e.target.value + 'px';
+            updatePreview();
+        });
+
+        document.getElementById('fontColor').addEventListener('input', (e) => {
+            settings.fontColor = e.target.value;
+            updatePreview();
+        });
+
+        document.getElementById('fontWeight').addEventListener('input', (e) => {
+            settings.fontWeight = e.target.value;
+            document.getElementById('fontWeightValue').textContent = e.target.value;
+           updatePreview();
+        });
+
+        document.getElementById('lineHeight').addEventListener('input', (e) => {
+            settings.lineHeight = e.target.value;
+            document.getElementById('lineHeightValue').textContent = e.target.value;
+            updatePreview();
+        });
+
+        document.querySelectorAll('.align-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.align-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                settings.textAlign = e.target.dataset.align;
+                updatePreview();
+            });
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentQuoteIndex > 0) {
+                currentQuoteIndex--;
+                updateNavigation();
+                updatePreview();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentQuoteIndex < quotes.length - 1) {
+                currentQuoteIndex++;
+                updateNavigation();
+                updatePreview();
+            }
+        });
+
+        function updateNavigation() {
+            if (quotes.length === 0) {
+                quoteCounter.textContent = 'No quotes';
+                prevBtn.disabled = true;
+                nextBtn.disabled = true;
+            } else {
+                quoteCounter.textContent = `${currentQuoteIndex + 1}/${quotes.length}`;
+                prevBtn.disabled = currentQuoteIndex === 0;
+                nextBtn.disabled = currentQuoteIndex === quotes.length - 1;
+            }
+        }
+
+        function updatePreview() {
+            if (quotes.length === 0 || !backgroundImage) {
+                placeholderOverlay.style.display = 'flex';
+                return;
+            }
+
+            placeholderOverlay.style.display = 'none';
+            
+            const quote = quotes[currentQuoteIndex];
+            quoteText.textContent = quote;
+            
+            const rgbColor = hexToRgb(settings.boxBgColor);
+            const opacity = settings.boxOpacity / 100;
+            
+            quoteBox.style.width = settings.boxWidth + '%';
+            quoteBox.style.height = settings.boxHeight + '%';
+            quoteBox.style.left = settings.boxHPos + '%';
+            quoteBox.style.top = settings.boxVPos + '%';
+            quoteBox.style.transform = 'translate(-50%, -50%)';
+            quoteBox.style.background = `rgba(${rgbColor.r}, ${rgbColor.g}, ${rgbColor.b}, ${opacity})`;
+            quoteBox.style.border = `${settings.borderWidth}px solid ${settings.borderColor}`;
+            quoteBox.style.borderRadius = settings.cornerRadius + 'px';
+            
+            quoteText.style.fontFamily = settings.fontFamily;
+            quoteText.style.fontSize = settings.fontSize + 'px';
+            quoteText.style.color = settings.fontColor;
+            quoteText.style.fontWeight = settings.fontWeight;
+            quoteText.style.lineHeight = settings.lineHeight;
+            quoteText.style.textAlign = settings.textAlign;
+        }
+
+        function hexToRgb(hex) {
+            const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? {
+                r: parseInt(result[1], 16),
+                g: parseInt(result[2], 16),
+                b: parseInt(result[3], 16)
+            } : { r: 255, g: 255, b: 255 };
+        }
+
+        function updateExportButton() {
+            exportBtn.disabled = !backgroundImage || quotes.length === 0;
+        }
+
+        exportBtn.addEventListener('click', async () => {
+            if (!backgroundImage || quotes.length === 0) return;
+
+            exportBtn.disabled = true;
+            exportBtn.textContent = '⏳ Generating...';
+            exportBtn.classList.add('loading');
+            showStatus('Generating quote images...', 'info');
+
+            try {
+                const zip = new JSZip();
+                const format = document.getElementById('exportFormat').value;
+                const size = parseInt(document.getElementById('exportSize').value);
+                const originalSize = 1080;
+                const scale = size / originalSize;
+                
+                for (let i = 0; i < quotes.length; i++) {
+                    currentQuoteIndex = i;
+                    updatePreview();
+                    
+                    await new Promise(resolve => setTimeout(resolve, 150));
+                    
+                    const canvas = await html2canvas(exportCanvas, {
+                        backgroundColor: null,
+                        scale: scale * 2,
+                        logging: false,
+                        width: originalSize,
+                        height: originalSize
+                    });
+                    
+                    const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
+                    const quality = format === 'jpeg' ? 0.92 : undefined;
+                    
+                    const blob = await new Promise(resolve => {
+                        if (format === 'jpeg') {
+                            canvas.toBlob(resolve, mimeType, quality);
+                        } else {
+                            canvas.toBlob(resolve, mimeType);
+                        }
+                    });
+                    
+                    const extension = format === 'png' ? 'png' : 'jpg';
+                    zip.file(`quote-${i + 1}.${extension}`, blob);
+                    
+                    showStatus(`Generated ${i + 1} of ${quotes.length}...`, 'info');
+                }
+                
+                showStatus('Creating ZIP file...', 'info');
+                const zipBlob = await zip.generateAsync({type: 'blob'});
+                
+                saveAs(zipBlob, 'elohims-quotes.zip');
+                
+                showStatus(`✅ Successfully generated ${quotes.length} quotes!`, 'success');
+                
+                currentQuoteIndex = 0;
+                updateNavigation();
+                updatePreview();
+                
+            } catch (error) {
+                console.error('Export error:', error);
+                showStatus('❌ Error generating quotes. Please try again.', 'error');
+            } finally {
+                exportBtn.disabled = false;
+                exportBtn.textContent = '📦 Generate & Download ZIP';
+                exportBtn.classList.remove('loading');
+            }
+        });
+
+        function showStatus(message, type) {
+            statusMessage.textContent = message;
+            statusMessage.className = 'status-message ' + type;
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    statusMessage.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        updateNavigation();
+        updateExportButton();
+    </script>
+</body>
+</html>

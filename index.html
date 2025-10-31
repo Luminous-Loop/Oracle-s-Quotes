@@ -4,33 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#1a1a1a">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="ELOHIMS Quotes">
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkVMT0hJTVMgUXVvdGUgR2VuZXJhdG9yIiwKICAic2hvcnRfbmFtZSI6ICJFTE9ISU1TIiwKICAic3RhcnRfdXJsIjogIi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMxYTFhMWEiLAogICJ0aGVtZV9jb2xvciI6ICIjMWExYTFhIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxOTIgMTkyJyUzRSUzQ3JlY3Qgd2lkdGg9JzE5MicgaGVpZ2h0PScxOTInIGZpbGw9JyUyMzFhMWExYScvJTNFJTNDdGV4dCB4PSc1MCUyNScgeT0nNTAlMjUnIGZvbnQtc2l6ZT0nODAnIGZpbGw9JyUyM2Q0YWYzNycgdGV4dC1hbmNob3I9J21pZGRsZScgZHk9Jy4zZW0nJTNFRSUzQy90ZXh0JTNFJTNDL3N2ZyUzRSIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2Uvc3ZnK3htbCIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCA1MTIgNTEyJyUzRSUzQ3JlY3Qgd2lkdGg9JzUxMicgaGVpZ2h0PSc1MTInIGZpbGw9JyUyMzFhMWExYScvJTNFJTNDdGV4dCB4PSc1MCUyNScgeT0nNTAlMjUnIGZvbnQtc2l6ZT0nMjAwJyBmaWxsPSclMjNkNGFmMzcnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGR5PScuM2VtJyUzRUUlM0MvdGV4dCUzRSUzQy9zdmclM0UiLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9">
     <title>ELOHIMS Quote Generator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            width: 100%;
-            overflow-x: hidden;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; overflow-x: hidden; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
             min-height: 100vh;
-            padding: 10px;
+            padding: 8px;
         }
-
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -39,222 +25,188 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
             overflow: hidden;
         }
-
         header {
             background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
             color: #d4af37;
-            padding: 20px;
+            padding: 18px;
             text-align: center;
         }
-
         header h1 {
             font-size: clamp(1.5em, 5vw, 2.5em);
             font-weight: 300;
             letter-spacing: 3px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
-
         header p {
             color: #fff;
             font-size: clamp(0.75em, 2vw, 0.9em);
             opacity: 0.8;
         }
-
         .main-content {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 20px;
-            padding: 20px;
+            gap: 15px;
+            padding: 15px;
         }
-
         @media (min-width: 1024px) {
             .main-content {
-                grid-template-columns: 380px 1fr;
-                gap: 30px;
-                padding: 30px;
+                grid-template-columns: 360px 1fr;
+                gap: 20px;
+                padding: 20px;
             }
         }
-
         .upload-section {
             background: #fafafa;
-            padding: 20px;
+            padding: 15px;
             border-radius: 8px;
             border: 2px dashed #d4af37;
             height: fit-content;
         }
-
         .section-title {
-            font-size: clamp(1em, 3vw, 1.2em);
+            font-size: clamp(0.95em, 3vw, 1.1em);
             color: #1a1a1a;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             font-weight: 600;
             border-bottom: 2px solid #d4af37;
-            padding-bottom: 8px;
+            padding-bottom: 6px;
         }
-
         .upload-box {
             background: white;
             border: 2px dashed #ccc;
             border-radius: 8px;
-            padding: 25px;
+            padding: 20px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
-
         .upload-box:hover {
             border-color: #d4af37;
             background: #fffef8;
         }
-
         .upload-box.has-image {
             border-color: #4caf50;
             background: #f1f8f4;
         }
-
-        .upload-preview {
-            max-width: 100%;
-            max-height: 120px;
-            margin-top: 10px;
-            border-radius: 4px;
-            display: none;
-        }
-
-        .upload-preview.visible {
+        #uploadContent { 
+            pointer-events: none;
             display: block;
         }
-
-        input[type="file"] {
+        .upload-preview {
+            max-width: 100%;
+            max-height: 100px;
+            border-radius: 4px;
             display: none;
+            margin-top: 10px;
         }
-
+        .upload-preview.visible { display: block; }
+        input[type="file"] { display: none; }
         .quotes-input {
             width: 100%;
-            min-height: 100px;
-            padding: 12px;
+            min-height: 90px;
+            padding: 10px;
             border: 2px solid #ddd;
             border-radius: 8px;
             font-family: inherit;
             font-size: 0.9em;
             resize: vertical;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
-
         .quotes-input:focus {
             outline: none;
             border-color: #d4af37;
         }
-
-        .quick-actions {
+        .quick-actions, .preset-templates {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
-
-        .quick-btn {
-            padding: 10px;
+        .quick-btn, .preset-btn {
+            padding: 9px;
             background: white;
             border: 2px solid #ddd;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.85em;
+            font-size: 0.82em;
             font-weight: 500;
             transition: all 0.3s;
         }
-
-        .quick-btn:hover, .quick-btn:active {
+        .quick-btn:hover, .preset-btn:hover {
             border-color: #d4af37;
             background: #fffef8;
         }
-
-        .controls-section {
-            margin-top: 20px;
-        }
-
-        .control-group {
-            margin-bottom: 15px;
-        }
-
+        .controls-section { margin-top: 12px; }
+        .control-group { margin-bottom: 10px; }
         .control-group label {
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             color: #333;
             font-weight: 500;
-            font-size: 0.85em;
+            font-size: 0.82em;
         }
-
-        .control-group select,
-        .control-group input[type="number"] {
+        .control-group select {
             width: 100%;
-            padding: 8px;
+            padding: 7px;
             border: 2px solid #ddd;
             border-radius: 6px;
-            font-size: 0.9em;
+            font-size: 0.88em;
         }
-
         .control-group input[type="range"] {
             width: 100%;
             padding: 0;
         }
-
         .control-group input[type="color"] {
             width: 100%;
-            height: 40px;
+            height: 38px;
             border: 2px solid #ddd;
             border-radius: 6px;
             cursor: pointer;
         }
-
         .align-buttons {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 6px;
         }
-
         .align-btn {
-            padding: 8px;
+            padding: 7px;
             border: 2px solid #ddd;
             background: white;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s;
             font-weight: 500;
-            font-size: 0.85em;
+            font-size: 0.82em;
         }
-
-        .align-btn:hover, .align-btn:active {
-            border-color: #d4af37;
-        }
-
+        .align-btn:hover { border-color: #d4af37; }
         .align-btn.active {
             background: #d4af37;
             color: white;
             border-color: #d4af37;
         }
-
         .preview-section {
             background: #fafafa;
-            padding: 20px;
+            padding: 15px;
             border-radius: 8px;
         }
-
         .canvas-wrapper {
             background: white;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
-
         .canvas-container {
             width: 100%;
             overflow: hidden;
             position: relative;
             background: #000;
         }
-
         .export-canvas {
             width: 1080px;
             height: 1080px;
@@ -262,7 +214,6 @@
             background: #f0f0f0;
             transform-origin: top left;
         }
-
         .canvas-background {
             position: absolute;
             top: 0;
@@ -271,7 +222,6 @@
             height: 100%;
             object-fit: cover;
         }
-
         .quote-box {
             position: absolute;
             background: rgba(255, 255, 255, 0.95);
@@ -283,7 +233,6 @@
             justify-content: center;
             text-align: center;
         }
-
         .quote-text {
             font-size: 42px;
             line-height: 1.6;
@@ -292,7 +241,6 @@
             word-wrap: break-word;
             max-width: 100%;
         }
-
         .placeholder-overlay {
             position: absolute;
             top: 0;
@@ -303,26 +251,24 @@
             align-items: center;
             justify-content: center;
             color: #999;
-            font-size: 1.1em;
+            font-size: 1em;
             background: rgba(255,255,255,0.9);
             z-index: 10;
             text-align: center;
             padding: 20px;
         }
-
         .preview-controls {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px;
+            padding: 10px;
             background: white;
             border-top: 2px solid #f0f0f0;
             flex-wrap: wrap;
             gap: 8px;
         }
-
         .nav-btn {
-            padding: 8px 16px;
+            padding: 8px 14px;
             background: #1a1a1a;
             color: white;
             border: none;
@@ -330,226 +276,148 @@
             cursor: pointer;
             font-weight: 500;
             transition: all 0.3s;
-            font-size: 0.9em;
+            font-size: 0.88em;
         }
-
-        .nav-btn:hover, .nav-btn:active {
-            background: #d4af37;
-        }
-
+        .nav-btn:hover { background: #d4af37; }
         .nav-btn:disabled {
             background: #ccc;
             cursor: not-allowed;
         }
-
         .quote-counter {
             font-weight: 600;
             color: #333;
-            font-size: 0.9em;
+            font-size: 0.88em;
         }
-
-        .export-section {
-            padding: 0 20px 20px 20px;
-        }
-
+        .export-section { padding: 0 15px 15px 15px; }
         .export-options {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 12px;
-            margin-bottom: 12px;
+            gap: 10px;
+            margin-bottom: 10px;
         }
-
         @media (min-width: 640px) {
             .export-options {
                 grid-template-columns: 1fr 1fr;
             }
         }
-
         .option-group {
             background: #fafafa;
-            padding: 12px;
+            padding: 10px;
             border-radius: 8px;
             border: 2px solid #e0e0e0;
         }
-
         .option-group label {
             display: block;
             font-weight: 600;
-            margin-bottom: 6px;
-            font-size: 0.85em;
+            margin-bottom: 5px;
+            font-size: 0.82em;
             color: #333;
         }
-
         .option-group select {
             width: 100%;
-            padding: 8px;
+            padding: 7px;
             border: 2px solid #ddd;
             border-radius: 6px;
-            font-size: 0.9em;
+            font-size: 0.88em;
         }
-
         .export-btn {
             width: 100%;
-            padding: 16px;
+            padding: 14px;
             background: linear-gradient(135deg, #d4af37 0%, #c9a12c 100%);
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 1em;
+            font-size: 0.95em;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
         }
-
-        .export-btn:hover, .export-btn:active {
+        .export-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
         }
-
         .export-btn:disabled {
             background: #ccc;
             cursor: not-allowed;
             transform: none;
         }
-
-        .export-btn.loading {
-            background: #666;
-        }
-
+        .export-btn.loading { background: #666; }
         .status-message {
             text-align: center;
-            margin-top: 12px;
-            padding: 10px;
+            margin-top: 10px;
+            padding: 9px;
             border-radius: 6px;
             font-weight: 500;
-            font-size: 0.9em;
+            font-size: 0.85em;
             display: none;
         }
-
         .status-message.success {
             background: #d4edda;
             color: #155724;
             display: block;
         }
-
         .status-message.error {
             background: #f8d7da;
             color: #721c24;
             display: block;
         }
-
         .status-message.info {
             background: #d1ecf1;
             color: #0c5460;
             display: block;
         }
-
         .collapsible-section {
             border-top: 1px solid #e0e0e0;
-            padding-top: 15px;
-            margin-top: 15px;
+            padding-top: 10px;
+            margin-top: 10px;
         }
-
         .collapsible-header {
             cursor: pointer;
             user-select: none;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px 0;
+            padding: 6px 0;
         }
-
         .collapsible-content {
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.3s ease;
         }
-
-        .collapsible-content.open {
-            max-height: 2000px;
-        }
-
+        .collapsible-content.open { max-height: 2000px; }
         .toggle-icon {
             transition: transform 0.3s;
+            font-size: 1.1em;
+            color: #d4af37;
+            font-weight: bold;
         }
-
-        .toggle-icon.open {
-            transform: rotate(180deg);
-        }
-
-        @media (max-width: 640px) {
-            body {
-                padding: 5px;
-            }
-
-            .container {
-                border-radius: 8px;
-            }
-
-            header {
-                padding: 15px;
-            }
-
-            .main-content {
-                padding: 15px;
-                gap: 15px;
-            }
-
-            .upload-section,
-            .preview-section {
-                padding: 15px;
-            }
-
-            .export-section {
-                padding: 0 15px 15px 15px;
-            }
-        }
-
-        .install-prompt {
-            background: linear-gradient(135deg, #d4af37 0%, #c9a12c 100%);
+        .toggle-icon.open { transform: rotate(180deg); }
+        .reset-btn {
+            padding: 8px;
+            background: #ff6b6b;
             color: white;
-            padding: 12px 20px;
-            text-align: center;
-            display: none;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-        .install-prompt.show {
-            display: flex;
-        }
-
-        .install-btn {
-            background: white;
-            color: #1a1a1a;
             border: none;
-            padding: 8px 16px;
             border-radius: 6px;
-            font-weight: 600;
             cursor: pointer;
+            font-size: 0.82em;
+            font-weight: 500;
+            transition: all 0.3s;
+            margin-top: 8px;
+            width: 100%;
         }
-
-        .close-prompt {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5em;
-            cursor: pointer;
-            padding: 0 8px;
+        .reset-btn:hover { background: #ff5252; }
+        @media (max-width: 640px) {
+            body { padding: 5px; }
+            .container { border-radius: 8px; }
+            header { padding: 12px; }
+            .main-content { padding: 10px; gap: 10px; }
+            .upload-section, .preview-section { padding: 12px; }
+            .export-section { padding: 0 10px 10px 10px; }
         }
     </style>
 </head>
 <body>
-    <div id="installPrompt" class="install-prompt">
-        <span>📱 Install ELOHIMS Quote Generator for offline access</span>
-        <div>
-            <button id="installBtn" class="install-btn">Install</button>
-            <button id="closePrompt" class="close-prompt">×</button>
-        </div>
-    </div>
-
     <div class="container">
         <header>
             <h1>ELOHIMS</h1>
@@ -563,73 +431,68 @@
                     
                     <div class="upload-box" id="uploadBox">
                         <input type="file" id="bgInput" accept="image/*">
-                        <div>
-                            <p style="font-size: 2em; margin-bottom: 8px;">📸</p>
-                            <p style="font-weight: 600; margin-bottom: 5px;">Upload Background</p>
-                            <p style="font-size: 0.85em; color: #666;">PNG or JPG</p>
+                        <div id="uploadContent">
+                            <p style="font-size: 1.8em; margin-bottom: 6px;">📸</p>
+                            <p style="font-weight: 600; margin-bottom: 4px; font-size: 0.9em;">Click to Upload Background</p>
+                            <p style="font-size: 0.8em; color: #666;">PNG or JPG</p>
                         </div>
                         <img id="uploadPreview" class="upload-preview">
                     </div>
 
-                    <label for="quotesInput" style="font-weight: 600; margin-bottom: 6px; display: block;">Enter Quotes:</label>
-                    <textarea 
-                        id="quotesInput" 
-                        class="quotes-input" 
-                        placeholder="One quote per line..."
-                    ></textarea>
+                    <label for="quotesInput" style="font-weight: 600; margin-bottom: 6px; display: block; font-size: 0.88em;">Enter Quotes (one per line):</label>
+                    <textarea id="quotesInput" class="quotes-input" placeholder="Faith moves mountains&#10;Trust builds bridges&#10;God's grace is sufficient"></textarea>
 
                     <div class="quick-actions">
                         <button class="quick-btn" id="clearBtn">🗑️ Clear All</button>
                         <button class="quick-btn" id="sampleBtn">✨ Sample</button>
                     </div>
 
+                    <div class="preset-templates">
+                        <button class="preset-btn" data-preset="elegant">🎨 Elegant</button>
+                        <button class="preset-btn" data-preset="bold">💪 Bold</button>
+                        <button class="preset-btn" data-preset="minimal">⚪ Minimal</button>
+                        <button class="preset-btn" data-preset="vibrant">🌈 Vibrant</button>
+                    </div>
+
                     <div class="controls-section">
                         <div class="collapsible-section">
                             <div class="collapsible-header" onclick="toggleSection('boxControls')">
-                                <h3 class="section-title" style="margin: 0; border: none; padding: 0;">🎨 Quote Box Style</h3>
-                                <span class="toggle-icon" id="boxControlsIcon">▼</span>
+                                <h3 class="section-title" style="margin: 0; border: none; padding: 0; font-size: 0.95em;">🎨 Quote Box Style</h3>
+                                <span class="toggle-icon open" id="boxControlsIcon">▼</span>
                             </div>
                             <div class="collapsible-content open" id="boxControls">
                                 <div class="control-group">
                                     <label>Box Width: <span id="boxWidthValue">70%</span></label>
                                     <input type="range" id="boxWidth" min="50" max="90" value="70">
                                 </div>
-
                                 <div class="control-group">
                                     <label>Box Height: <span id="boxHeightValue">35%</span></label>
                                     <input type="range" id="boxHeight" min="25" max="50" value="35">
                                 </div>
-
                                 <div class="control-group">
-                                    <label>Horizontal: <span id="boxHPosValue">Center</span></label>
+                                    <label>Horizontal: <span id="boxHPosValue">50%</span></label>
                                     <input type="range" id="boxHPos" min="0" max="100" value="50">
                                 </div>
-
                                 <div class="control-group">
-                                    <label>Vertical: <span id="boxVPosValue">Center</span></label>
+                                    <label>Vertical: <span id="boxVPosValue">50%</span></label>
                                     <input type="range" id="boxVPos" min="0" max="100" value="50">
                                 </div>
-
                                 <div class="control-group">
                                     <label>Box Color</label>
                                     <input type="color" id="boxBgColor" value="#ffffff">
                                 </div>
-
                                 <div class="control-group">
                                     <label>Opacity: <span id="boxOpacityValue">95%</span></label>
                                     <input type="range" id="boxOpacity" min="50" max="100" value="95">
                                 </div>
-
                                 <div class="control-group">
                                     <label>Border Color</label>
                                     <input type="color" id="borderColor" value="#8B0000">
                                 </div>
-
                                 <div class="control-group">
                                     <label>Border: <span id="borderWidthValue">3px</span></label>
                                     <input type="range" id="borderWidth" min="0" max="10" value="3">
                                 </div>
-
                                 <div class="control-group">
                                     <label>Corners: <span id="cornerRadiusValue">25px</span></label>
                                     <input type="range" id="cornerRadius" min="0" max="50" value="25">
@@ -639,8 +502,8 @@
 
                         <div class="collapsible-section">
                             <div class="collapsible-header" onclick="toggleSection('textControls')">
-                                <h3 class="section-title" style="margin: 0; border: none; padding: 0;">✍️ Text Style</h3>
-                                <span class="toggle-icon" id="textControlsIcon">▼</span>
+                                <h3 class="section-title" style="margin: 0; border: none; padding: 0; font-size: 0.95em;">✍️ Text Style</h3>
+                                <span class="toggle-icon open" id="textControlsIcon">▼</span>
                             </div>
                             <div class="collapsible-content open" id="textControls">
                                 <div class="control-group">
@@ -656,27 +519,22 @@
                                         <option value="'Courier New', monospace">Courier New</option>
                                     </select>
                                 </div>
-
                                 <div class="control-group">
                                     <label>Size: <span id="fontSizeValue">42px</span></label>
                                     <input type="range" id="fontSize" min="24" max="72" value="42">
                                 </div>
-
                                 <div class="control-group">
                                     <label>Font Color</label>
                                     <input type="color" id="fontColor" value="#1a1a1a">
                                 </div>
-
                                 <div class="control-group">
                                     <label>Weight: <span id="fontWeightValue">600</span></label>
                                     <input type="range" id="fontWeight" min="300" max="900" step="100" value="600">
                                 </div>
-
                                 <div class="control-group">
                                     <label>Line Height: <span id="lineHeightValue">1.6</span></label>
                                     <input type="range" id="lineHeight" min="1" max="2.5" step="0.1" value="1.6">
                                 </div>
-
                                 <div class="control-group">
                                     <label>Alignment</label>
                                     <div class="align-buttons">
@@ -687,6 +545,8 @@
                                 </div>
                             </div>
                         </div>
+
+                        <button class="reset-btn" id="resetBtn">🔄 Reset All Settings</button>
                     </div>
                 </div>
             </div>
@@ -705,7 +565,7 @@
                                     </div>
                                 </div>
                                 <div class="placeholder-overlay" id="placeholderOverlay">
-                                    Upload background and enter quotes
+                                    📸 Upload background and enter quotes to begin
                                 </div>
                             </div>
                         </div>
@@ -737,286 +597,250 @@
                     </select>
                 </div>
             </div>
-            <button class="export-btn" id="exportBtn" disabled>
-                📦 Generate & Download ZIP
-            </button>
+            <button class="export-btn" id="exportBtn" disabled>📦 Generate & Download ZIP</button>
             <div class="status-message" id="statusMessage"></div>
         </div>
     </div>
 
     <script>
-        // PWA Install prompt
-        let deferredPrompt;
-        const installPrompt = document.getElementById('installPrompt');
-        const installBtn = document.getElementById('installBtn');
-        const closePrompt = document.getElementById('closePrompt');
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            installPrompt.classList.add('show');
-        });
-
-        installBtn.addEventListener('click', async () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                deferredPrompt = null;
-                installPrompt.classList.remove('show');
-            }
-        });
-
-        closePrompt.addEventListener('click', () => {
-            installPrompt.classList.remove('show');
-        });
-
-        // Collapsible sections
         function toggleSection(id) {
-            const content = document.getElementById(id);
-            const icon = document.getElementById(id + 'Icon');
-            content.classList.toggle('open');
-            icon.classList.toggle('open');
+            document.getElementById(id).classList.toggle('open');
+            document.getElementById(id + 'Icon').classList.toggle('open');
         }
 
-        let backgroundImage = null;
-        let quotes = [];
-        let currentQuoteIndex = 0;
+        let backgroundImage = null, quotes = [], currentQuoteIndex = 0;
         
-        let settings = {
-            boxWidth: 70,
-            boxHeight: 35,
-            boxHPos: 50,
-            boxVPos: 50,
-            boxBgColor: '#ffffff',
-            boxOpacity: 95,
-            borderColor: '#8B0000',
-            borderWidth: 3,
-            cornerRadius: 25,
-           fontFamily: 'Arial, sans-serif',
-            fontSize: 42,
-            fontColor: '#1a1a1a',
-            fontWeight: 600,
-            lineHeight: 1.6,
-            textAlign: 'center'
+        const defaultSettings = {
+            boxWidth: 70, boxHeight: 35, boxHPos: 50, boxVPos: 50,
+            boxBgColor: '#ffffff', boxOpacity: 95, borderColor: '#8B0000',
+            borderWidth: 3, cornerRadius: 25, fontFamily: 'Arial, sans-serif',
+            fontSize: 42, fontColor: '#1a1a1a', fontWeight: 600, lineHeight: 1.6, textAlign: 'center'
         };
 
-        const uploadBox = document.getElementById('uploadBox');
-        const bgInput = document.getElementById('bgInput');
-        const uploadPreview = document.getElementById('uploadPreview');
-        const quotesInput = document.getElementById('quotesInput');
-        const canvasBg = document.getElementById('canvasBg');
-        const quoteBox = document.getElementById('quoteBox');
-        const quoteText = document.getElementById('quoteText');
-        const exportCanvas = document.getElementById('exportCanvas');
-        const canvasContainer = document.getElementById('canvasContainer');
-        const placeholderOverlay = document.getElementById('placeholderOverlay');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const quoteCounter = document.getElementById('quoteCounter');
-        const exportBtn = document.getElementById('exportBtn');
-        const statusMessage = document.getElementById('statusMessage');
-        const clearBtn = document.getElementById('clearBtn');
-        const sampleBtn = document.getElementById('sampleBtn');
+        let settings = {...defaultSettings};
+
+        const presets = {
+            elegant: {boxBgColor: '#ffffff', boxOpacity: 90, borderColor: '#d4af37', borderWidth: 2, cornerRadius: 30, fontFamily: 'Georgia, serif', fontSize: 38, fontColor: '#2c3e50', fontWeight: 400, lineHeight: 1.8},
+            bold: {boxBgColor: '#1a1a1a', boxOpacity: 95, borderColor: '#ff4444', borderWidth: 6, cornerRadius: 10, fontFamily: "'Impact', sans-serif", fontSize: 48, fontColor: '#ffffff', fontWeight: 700, lineHeight: 1.4},
+            minimal: {boxBgColor: '#f8f9fa', boxOpacity: 85, borderColor: '#e9ecef', borderWidth: 1, cornerRadius: 5, fontFamily: 'Arial, sans-serif', fontSize: 36, fontColor: '#495057', fontWeight: 400, lineHeight: 1.7},
+            vibrant: {boxBgColor: '#ff6b6b', boxOpacity: 90, borderColor: '#4ecdc4', borderWidth: 5, cornerRadius: 20, fontFamily: "'Trebuchet MS', sans-serif", fontSize: 44, fontColor: '#ffffff', fontWeight: 700, lineHeight: 1.5}
+        };
+
+        const $ = id => document.getElementById(id);
 
         function scaleCanvas() {
-            const containerWidth = canvasContainer.offsetWidth;
-            const scale = containerWidth / 1080;
-            exportCanvas.style.transform = `scale(${scale})`;
-            canvasContainer.style.height = (1080 * scale) + 'px';
+            const w = $('canvasContainer').offsetWidth;
+            const scale = w / 1080;
+            $('exportCanvas').style.transform = `scale(${scale})`;
+            $('canvasContainer').style.height = (1080 * scale) + 'px';
         }
 
         window.addEventListener('resize', scaleCanvas);
         setTimeout(scaleCanvas, 100);
 
-        uploadBox.addEventListener('click', () => bgInput.click());
+        $('uploadBox').onclick = () => $('bgInput').click();
         
-        bgInput.addEventListener('change', (e) => {
+        $('bgInput').onchange = e => {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = (e) => {
+                reader.onload = e => {
                     backgroundImage = e.target.result;
-                    uploadPreview.src = backgroundImage;
-                    uploadPreview.classList.add('visible');
-                    uploadBox.classList.add('has-image');
-                    canvasBg.src = backgroundImage;
-                    canvasBg.style.display = 'block';
+                    $('uploadPreview').src = backgroundImage;
+                    $('uploadPreview').classList.add('visible');
+                    $('uploadContent').style.display = 'none';
+                    $('uploadBox').classList.add('has-image');
+                    $('canvasBg').src = backgroundImage;
+                    $('canvasBg').style.display = 'block';
                     updatePreview();
                     updateExportButton();
                 };
                 reader.readAsDataURL(file);
             }
-        });
+        };
 
-        quotesInput.addEventListener('input', () => {
-            const text = quotesInput.value.trim();
-            quotes = text.split('\n').filter(q => q.trim() !== '');
+        $('quotesInput').oninput = () => {
+            quotes = $('quotesInput').value.trim().split('\n').filter(q => q.trim());
             currentQuoteIndex = 0;
             updateNavigation();
             updatePreview();
             updateExportButton();
-        });
+        };
 
-        clearBtn.addEventListener('click', () => {
-            quotesInput.value = '';
+        $('clearBtn').onclick = () => {
+            $('quotesInput').value = '';
             quotes = [];
             currentQuoteIndex = 0;
             updateNavigation();
             updatePreview();
             updateExportButton();
+        };
+
+        $('sampleBtn').onclick = () => {
+            $('quotesInput').value = 'Faith moves mountains\nTrust builds bridges\nGod\'s grace is sufficient\nEvery challenge is growth\nLet your light shine';
+            $('quotesInput').oninput();
+        };
+
+        $('resetBtn').onclick = () => {
+            settings = {...defaultSettings};
+            applySettings();
+            updatePreview();
+        };
+
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.onclick = () => {
+                Object.assign(settings, presets[btn.dataset.preset]);
+                applySettings();
+                updatePreview();
+            };
         });
 
-        sampleBtn.addEventListener('click', () => {
-            quotesInput.value = `Faith moves mountains\nTrust builds bridges\nGod's grace is sufficient\nEvery challenge is growth\nLet your light shine`;
-            quotesInput.dispatchEvent(new Event('input'));
-        });
+        function applySettings() {
+            $('boxWidth').value = settings.boxWidth;
+            $('boxWidthValue').textContent = settings.boxWidth + '%';
+            $('boxHeight').value = settings.boxHeight;
+            $('boxHeightValue').textContent = settings.boxHeight + '%';
+            $('boxHPos').value = settings.boxHPos;
+            $('boxHPosValue').textContent = settings.boxHPos + '%';
+            $('boxVPos').value = settings.boxVPos;
+            $('boxVPosValue').textContent = settings.boxVPos + '%';
+            $('boxBgColor').value = settings.boxBgColor;
+            $('boxOpacity').value = settings.boxOpacity;
+            $('boxOpacityValue').textContent = settings.boxOpacity + '%';
+            $('borderColor').value = settings.borderColor;
+            $('borderWidth').value = settings.borderWidth;
+            $('borderWidthValue').textContent = settings.borderWidth + 'px';
+            $('cornerRadius').value = settings.cornerRadius;
+            $('cornerRadiusValue').textContent = settings.cornerRadius + 'px';
+            $('fontFamily').value = settings.fontFamily;
+            $('fontSize').value = settings.fontSize;
+            $('fontSizeValue').textContent = settings.fontSize + 'px';
+            $('fontColor').value = settings.fontColor;
+            $('fontWeight').value = settings.fontWeight;
+            $('fontWeightValue').textContent = settings.fontWeight;
+            $('lineHeight').value = settings.lineHeight;
+            $('lineHeightValue').textContent = settings.lineHeight;
+            document.querySelectorAll('.align-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.align === settings.textAlign);
+            });
+        }
 
-        document.getElementById('boxWidth').addEventListener('input', (e) => {
+        // Event listeners for all controls
+        $('boxWidth').oninput = e => {
             settings.boxWidth = e.target.value;
-            document.getElementById('boxWidthValue').textContent = e.target.value + '%';
+            $('boxWidthValue').textContent = e.target.value + '%';
             updatePreview();
-        });
+        };
 
-        document.getElementById('boxHeight').addEventListener('input', (e) => {
+        $('boxHeight').oninput = e => {
             settings.boxHeight = e.target.value;
-            document.getElementById('boxHeightValue').textContent = e.target.value + '%';
+            $('boxHeightValue').textContent = e.target.value + '%';
             updatePreview();
-        });
+        };
 
-        document.getElementById('boxHPos').addEventListener('input', (e) => {
+        $('boxHPos').oninput = e => {
             settings.boxHPos = e.target.value;
-            document.getElementById('boxHPosValue').textContent = e.target.value + '%';
+            $('boxHPosValue').textContent = e.target.value + '%';
             updatePreview();
-        });
+        };
 
-        document.getElementById('boxVPos').addEventListener('input', (e) => {
+        $('boxVPos').oninput = e => {
             settings.boxVPos = e.target.value;
-            document.getElementById('boxVPosValue').textContent = e.target.value + '%';
+            $('boxVPosValue').textContent = e.target.value + '%';
             updatePreview();
-        });
+        };
 
-        document.getElementById('boxBgColor').addEventListener('input', (e) => {
+        $('boxBgColor').oninput = e => {
             settings.boxBgColor = e.target.value;
             updatePreview();
-        });
+        };
 
-        document.getElementById('boxOpacity').addEventListener('input', (e) => {
+        $('boxOpacity').oninput = e => {
             settings.boxOpacity = e.target.value;
-            document.getElementById('boxOpacityValue').textContent = e.target.value + '%';
+            $('boxOpacityValue').textContent = e.target.value + '%';
             updatePreview();
-        });
+        };
 
-        document.getElementById('borderColor').addEventListener('input', (e) => {
+        $('borderColor').oninput = e => {
             settings.borderColor = e.target.value;
             updatePreview();
-        });
+        };
 
-        document.getElementById('borderWidth').addEventListener('input', (e) => {
+        $('borderWidth').oninput = e => {
             settings.borderWidth = e.target.value;
-            document.getElementById('borderWidthValue').textContent = e.target.value + 'px';
+            $('borderWidthValue').textContent = e.target.value + 'px';
             updatePreview();
-        });
+        };
 
-        document.getElementById('cornerRadius').addEventListener('input', (e) => {
+        $('cornerRadius').oninput = e => {
             settings.cornerRadius = e.target.value;
-            document.getElementById('cornerRadiusValue').textContent = e.target.value + 'px';
+            $('cornerRadiusValue').textContent = e.target.value + 'px';
             updatePreview();
-        });
+        };
 
-        document.getElementById('fontFamily').addEventListener('change', (e) => {
+        $('fontFamily').onchange = e => {
             settings.fontFamily = e.target.value;
             updatePreview();
-        });
+        };
 
-        document.getElementById('fontSize').addEventListener('input', (e) => {
+        $('fontSize').oninput = e => {
             settings.fontSize = e.target.value;
-            document.getElementById('fontSizeValue').textContent = e.target.value + 'px';
+            $('fontSizeValue').textContent = e.target.value + 'px';
             updatePreview();
-        });
+        };
 
-        document.getElementById('fontColor').addEventListener('input', (e) => {
+        $('fontColor').oninput = e => {
             settings.fontColor = e.target.value;
             updatePreview();
-        });
+        };
 
-        document.getElementById('fontWeight').addEventListener('input', (e) => {
+        $('fontWeight').oninput = e => {
             settings.fontWeight = e.target.value;
-            document.getElementById('fontWeightValue').textContent = e.target.value;
-           updatePreview();
-        });
-
-        document.getElementById('lineHeight').addEventListener('input', (e) => {
-            settings.lineHeight = e.target.value;
-            document.getElementById('lineHeightValue').textContent = e.target.value;
+            $('fontWeightValue').textContent = e.target.value;
             updatePreview();
-        });
+        };
+
+        $('lineHeight').oninput = e => {
+            settings.lineHeight = e.target.value;
+            $('lineHeightValue').textContent = e.target.value;
+            updatePreview();
+        };
 
         document.querySelectorAll('.align-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
+            btn.onclick = e => {
                 document.querySelectorAll('.align-btn').forEach(b => b.classList.remove('active'));
                 e.target.classList.add('active');
                 settings.textAlign = e.target.dataset.align;
                 updatePreview();
-            });
+            };
         });
 
-        prevBtn.addEventListener('click', () => {
+        $('prevBtn').onclick = () => {
             if (currentQuoteIndex > 0) {
                 currentQuoteIndex--;
                 updateNavigation();
                 updatePreview();
             }
-        });
+        };
 
-        nextBtn.addEventListener('click', () => {
+        $('nextBtn').onclick = () => {
             if (currentQuoteIndex < quotes.length - 1) {
                 currentQuoteIndex++;
                 updateNavigation();
                 updatePreview();
             }
-        });
+        };
 
         function updateNavigation() {
             if (quotes.length === 0) {
-                quoteCounter.textContent = 'No quotes';
-                prevBtn.disabled = true;
-                nextBtn.disabled = true;
+                $('quoteCounter').textContent = 'No quotes';
+                $('prevBtn').disabled = true;
+                $('nextBtn').disabled = true;
             } else {
-                quoteCounter.textContent = `${currentQuoteIndex + 1}/${quotes.length}`;
-                prevBtn.disabled = currentQuoteIndex === 0;
-                nextBtn.disabled = currentQuoteIndex === quotes.length - 1;
+                $('quoteCounter').textContent = `${currentQuoteIndex + 1}/${quotes.length}`;
+                $('prevBtn').disabled = currentQuoteIndex === 0;
+                $('nextBtn').disabled = currentQuoteIndex === quotes.length - 1;
             }
-        }
-
-        function updatePreview() {
-            if (quotes.length === 0 || !backgroundImage) {
-                placeholderOverlay.style.display = 'flex';
-                return;
-            }
-
-            placeholderOverlay.style.display = 'none';
-            
-            const quote = quotes[currentQuoteIndex];
-            quoteText.textContent = quote;
-            
-            const rgbColor = hexToRgb(settings.boxBgColor);
-            const opacity = settings.boxOpacity / 100;
-            
-            quoteBox.style.width = settings.boxWidth + '%';
-            quoteBox.style.height = settings.boxHeight + '%';
-            quoteBox.style.left = settings.boxHPos + '%';
-            quoteBox.style.top = settings.boxVPos + '%';
-            quoteBox.style.transform = 'translate(-50%, -50%)';
-            quoteBox.style.background = `rgba(${rgbColor.r}, ${rgbColor.g}, ${rgbColor.b}, ${opacity})`;
-            quoteBox.style.border = `${settings.borderWidth}px solid ${settings.borderColor}`;
-            quoteBox.style.borderRadius = settings.cornerRadius + 'px';
-            
-            quoteText.style.fontFamily = settings.fontFamily;
-            quoteText.style.fontSize = settings.fontSize + 'px';
-            quoteText.style.color = settings.fontColor;
-            quoteText.style.fontWeight = settings.fontWeight;
-            quoteText.style.lineHeight = settings.lineHeight;
-            quoteText.style.textAlign = settings.textAlign;
         }
 
         function hexToRgb(hex) {
@@ -1028,24 +852,59 @@
             } : { r: 255, g: 255, b: 255 };
         }
 
-        function updateExportButton() {
-            exportBtn.disabled = !backgroundImage || quotes.length === 0;
+        function updatePreview() {
+            if (quotes.length === 0 || !backgroundImage) {
+                $('placeholderOverlay').style.display = 'flex';
+                return;
+            }
+
+            $('placeholderOverlay').style.display = 'none';
+            
+            const quote = quotes[currentQuoteIndex];
+            $('quoteText').textContent = quote;
+            
+            const rgb = hexToRgb(settings.boxBgColor);
+            const opacity = settings.boxOpacity / 100;
+            
+            const box = $('quoteBox');
+            box.style.width = settings.boxWidth + '%';
+            box.style.height = settings.boxHeight + '%';
+            box.style.left = settings.boxHPos + '%';
+            box.style.top = settings.boxVPos + '%';
+            box.style.transform = 'translate(-50%, -50%)';
+            box.style.background = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity})`;
+            box.style.border = `${settings.borderWidth}px solid ${settings.borderColor}`;
+            box.style.borderRadius = settings.cornerRadius + 'px';
+            
+            const text = $('quoteText');
+            text.style.fontFamily = settings.fontFamily;
+            text.style.fontSize = settings.fontSize + 'px';
+            text.style.color = settings.fontColor;
+            text.style.fontWeight = settings.fontWeight;
+            text.style.lineHeight = settings.lineHeight;
+            text.style.textAlign = settings.textAlign;
         }
 
-        exportBtn.addEventListener('click', async () => {
+        function updateExportButton() {
+            $('exportBtn').disabled = !backgroundImage || quotes.length === 0;
+        }
+
+        $('exportBtn').onclick = async () => {
             if (!backgroundImage || quotes.length === 0) return;
 
-            exportBtn.disabled = true;
-            exportBtn.textContent = '⏳ Generating...';
-            exportBtn.classList.add('loading');
+            const btn = $('exportBtn');
+            const msg = $('statusMessage');
+            
+            btn.disabled = true;
+            btn.textContent = '⏳ Generating...';
+            btn.classList.add('loading');
             showStatus('Generating quote images...', 'info');
 
             try {
                 const zip = new JSZip();
-                const format = document.getElementById('exportFormat').value;
-                const size = parseInt(document.getElementById('exportSize').value);
-                const originalSize = 1080;
-                const scale = size / originalSize;
+                const format = $('exportFormat').value;
+                const size = parseInt($('exportSize').value);
+                const scale = size / 1080;
                 
                 for (let i = 0; i < quotes.length; i++) {
                     currentQuoteIndex = i;
@@ -1053,12 +912,12 @@
                     
                     await new Promise(resolve => setTimeout(resolve, 150));
                     
-                    const canvas = await html2canvas(exportCanvas, {
+                    const canvas = await html2canvas($('exportCanvas'), {
                         backgroundColor: null,
                         scale: scale * 2,
                         logging: false,
-                        width: originalSize,
-                        height: originalSize
+                        width: 1080,
+                        height: 1080
                     });
                     
                     const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
@@ -1072,8 +931,8 @@
                         }
                     });
                     
-                    const extension = format === 'png' ? 'png' : 'jpg';
-                    zip.file(`quote-${i + 1}.${extension}`, blob);
+                    const ext = format === 'png' ? 'png' : 'jpg';
+                    zip.file(`quote-${i + 1}.${ext}`, blob);
                     
                     showStatus(`Generated ${i + 1} of ${quotes.length}...`, 'info');
                 }
@@ -1093,19 +952,20 @@
                 console.error('Export error:', error);
                 showStatus('❌ Error generating quotes. Please try again.', 'error');
             } finally {
-                exportBtn.disabled = false;
-                exportBtn.textContent = '📦 Generate & Download ZIP';
-                exportBtn.classList.remove('loading');
+                btn.disabled = false;
+                btn.textContent = '📦 Generate & Download ZIP';
+                btn.classList.remove('loading');
             }
-        });
+        };
 
         function showStatus(message, type) {
-            statusMessage.textContent = message;
-            statusMessage.className = 'status-message ' + type;
+            const msg = $('statusMessage');
+            msg.textContent = message;
+            msg.className = 'status-message ' + type;
             
             if (type === 'success') {
                 setTimeout(() => {
-                    statusMessage.style.display = 'none';
+                    msg.style.display = 'none';
                 }, 5000);
             }
         }

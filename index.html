@@ -15,10 +15,11 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
             min-height: 100vh;
-            padding: 8px;
+            padding: 5px;
         }
         .container {
             max-width: 1400px;
+            width: 100%;
             margin: 0 auto;
             background: white;
             border-radius: 12px;
@@ -28,25 +29,25 @@
         header {
             background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
             color: #d4af37;
-            padding: 18px;
+            padding: 15px;
             text-align: center;
         }
         header h1 {
-            font-size: clamp(1.5em, 5vw, 2.5em);
+            font-size: clamp(1.3em, 5vw, 2.5em);
             font-weight: 300;
-            letter-spacing: 3px;
-            margin-bottom: 6px;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
         }
         header p {
             color: #fff;
-            font-size: clamp(0.75em, 2vw, 0.9em);
+            font-size: clamp(0.7em, 2vw, 0.9em);
             opacity: 0.8;
         }
         .main-content {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 15px;
-            padding: 15px;
+            gap: 12px;
+            padding: 12px;
         }
         @media (min-width: 1024px) {
             .main-content {
@@ -57,35 +58,36 @@
         }
         .upload-section {
             background: #fafafa;
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
             border: 2px dashed #d4af37;
             height: fit-content;
         }
         .section-title {
-            font-size: clamp(0.95em, 3vw, 1.1em);
+            font-size: clamp(0.9em, 3vw, 1.1em);
             color: #1a1a1a;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             font-weight: 600;
             border-bottom: 2px solid #d4af37;
-            padding-bottom: 6px;
+            padding-bottom: 5px;
         }
         .upload-box {
             background: white;
             border: 2px dashed #ccc;
             border-radius: 8px;
-            padding: 20px;
+            padding: 18px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
-            margin-bottom: 12px;
-            min-height: 100px;
+            margin-bottom: 10px;
+            min-height: 90px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            position: relative;
         }
-        .upload-box:hover {
+        .upload-box:hover, .upload-box:active {
             border-color: #d4af37;
             background: #fffef8;
         }
@@ -93,97 +95,130 @@
             border-color: #4caf50;
             background: #f1f8f4;
         }
-        #uploadContent { 
+        .upload-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             pointer-events: none;
-            display: block;
         }
         .upload-preview {
             max-width: 100%;
-            max-height: 100px;
+            max-height: 80px;
             border-radius: 4px;
             display: none;
-            margin-top: 10px;
+            margin-top: 8px;
         }
         .upload-preview.visible { display: block; }
         input[type="file"] { display: none; }
+        
         .quotes-input {
             width: 100%;
-            min-height: 90px;
+            min-height: 80px;
             padding: 10px;
             border: 2px solid #ddd;
             border-radius: 8px;
             font-family: inherit;
-            font-size: 0.9em;
+            font-size: 0.85em;
             resize: vertical;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         .quotes-input:focus {
             outline: none;
             border-color: #d4af37;
         }
-        .quick-actions, .preset-templates {
+        .quick-actions {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            gap: 6px;
+            margin-bottom: 8px;
+        }
+        .preset-templates {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
             margin-bottom: 10px;
         }
         .quick-btn, .preset-btn {
-            padding: 9px;
+            padding: 8px;
             background: white;
             border: 2px solid #ddd;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.82em;
+            font-size: 0.75em;
             font-weight: 500;
             transition: all 0.3s;
+            white-space: nowrap;
         }
-        .quick-btn:hover, .preset-btn:hover {
+        .quick-btn:hover, .preset-btn:hover,
+        .quick-btn:active, .preset-btn:active {
             border-color: #d4af37;
             background: #fffef8;
         }
-        .controls-section { margin-top: 12px; }
-        .control-group { margin-bottom: 10px; }
+        .controls-section { margin-top: 10px; }
+        .control-group { margin-bottom: 8px; }
         .control-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             color: #333;
             font-weight: 500;
-            font-size: 0.82em;
+            font-size: 0.75em;
         }
         .control-group select {
             width: 100%;
-            padding: 7px;
+            padding: 6px;
             border: 2px solid #ddd;
             border-radius: 6px;
-            font-size: 0.88em;
+            font-size: 0.8em;
         }
         .control-group input[type="range"] {
             width: 100%;
             padding: 0;
+            height: 24px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            cursor: pointer;
+        }
+        .control-group input[type="range"]::-webkit-slider-track {
+            width: 100%;
+            height: 6px;
+            background: #ddd;
+            border-radius: 3px;
+        }
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #d4af37;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-top: -7px;
         }
         .control-group input[type="color"] {
             width: 100%;
-            height: 38px;
+            height: 35px;
             border: 2px solid #ddd;
             border-radius: 6px;
             cursor: pointer;
+            padding: 2px;
         }
         .align-buttons {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
+            gap: 5px;
         }
         .align-btn {
-            padding: 7px;
+            padding: 6px;
             border: 2px solid #ddd;
             background: white;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s;
             font-weight: 500;
-            font-size: 0.82em;
+            font-size: 0.75em;
         }
-        .align-btn:hover { border-color: #d4af37; }
+        .align-btn:hover, .align-btn:active { border-color: #d4af37; }
         .align-btn.active {
             background: #d4af37;
             color: white;
@@ -191,7 +226,7 @@
         }
         .preview-section {
             background: #fafafa;
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
         }
         .canvas-wrapper {
@@ -199,7 +234,7 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         .canvas-container {
             width: 100%;
@@ -251,7 +286,7 @@
             align-items: center;
             justify-content: center;
             color: #999;
-            font-size: 1em;
+            font-size: 0.9em;
             background: rgba(255,255,255,0.9);
             z-index: 10;
             text-align: center;
@@ -261,14 +296,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px;
+            padding: 8px;
             background: white;
             border-top: 2px solid #f0f0f0;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
         }
         .nav-btn {
-            padding: 8px 14px;
+            padding: 6px 12px;
             background: #1a1a1a;
             color: white;
             border: none;
@@ -276,9 +311,9 @@
             cursor: pointer;
             font-weight: 500;
             transition: all 0.3s;
-            font-size: 0.88em;
+            font-size: 0.8em;
         }
-        .nav-btn:hover { background: #d4af37; }
+        .nav-btn:hover, .nav-btn:active { background: #d4af37; }
         .nav-btn:disabled {
             background: #ccc;
             cursor: not-allowed;
@@ -286,54 +321,49 @@
         .quote-counter {
             font-weight: 600;
             color: #333;
-            font-size: 0.88em;
+            font-size: 0.8em;
         }
-        .export-section { padding: 0 15px 15px 15px; }
+        .export-section { padding: 0 12px 12px 12px; }
         .export-options {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        @media (min-width: 640px) {
-            .export-options {
-                grid-template-columns: 1fr 1fr;
-            }
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 8px;
         }
         .option-group {
             background: #fafafa;
-            padding: 10px;
+            padding: 8px;
             border-radius: 8px;
             border: 2px solid #e0e0e0;
         }
         .option-group label {
             display: block;
             font-weight: 600;
-            margin-bottom: 5px;
-            font-size: 0.82em;
+            margin-bottom: 4px;
+            font-size: 0.75em;
             color: #333;
         }
         .option-group select {
             width: 100%;
-            padding: 7px;
+            padding: 6px;
             border: 2px solid #ddd;
             border-radius: 6px;
-            font-size: 0.88em;
+            font-size: 0.8em;
         }
         .export-btn {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             background: linear-gradient(135deg, #d4af37 0%, #c9a12c 100%);
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 0.95em;
+            font-size: 0.85em;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
         }
-        .export-btn:hover {
+        .export-btn:hover, .export-btn:active {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
         }
@@ -345,11 +375,11 @@
         .export-btn.loading { background: #666; }
         .status-message {
             text-align: center;
-            margin-top: 10px;
-            padding: 9px;
+            margin-top: 8px;
+            padding: 8px;
             border-radius: 6px;
             font-weight: 500;
-            font-size: 0.85em;
+            font-size: 0.75em;
             display: none;
         }
         .status-message.success {
@@ -369,8 +399,8 @@
         }
         .collapsible-section {
             border-top: 1px solid #e0e0e0;
-            padding-top: 10px;
-            margin-top: 10px;
+            padding-top: 8px;
+            margin-top: 8px;
         }
         .collapsible-header {
             cursor: pointer;
@@ -378,7 +408,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 6px 0;
+            padding: 5px 0;
+            background: #f5f5f5;
+            padding: 8px;
+            border-radius: 6px;
+            margin-bottom: 8px;
         }
         .collapsible-content {
             max-height: 0;
@@ -388,7 +422,7 @@
         .collapsible-content.open { max-height: 2000px; }
         .toggle-icon {
             transition: transform 0.3s;
-            font-size: 1.1em;
+            font-size: 1em;
             color: #d4af37;
             font-weight: bold;
         }
@@ -400,20 +434,23 @@
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.82em;
+            font-size: 0.75em;
             font-weight: 500;
             transition: all 0.3s;
             margin-top: 8px;
             width: 100%;
         }
-        .reset-btn:hover { background: #ff5252; }
+        .reset-btn:hover, .reset-btn:active { background: #ff5252; }
+        
         @media (max-width: 640px) {
             body { padding: 5px; }
             .container { border-radius: 8px; }
-            header { padding: 12px; }
-            .main-content { padding: 10px; gap: 10px; }
-            .upload-section, .preview-section { padding: 12px; }
-            .export-section { padding: 0 10px 10px 10px; }
+            header { padding: 10px; }
+            .main-content { padding: 8px; gap: 8px; }
+            .upload-section, .preview-section { padding: 10px; }
+            .export-section { padding: 0 8px 8px 8px; }
+            .collapsible-content { max-height: 0; }
+            .section-title { font-size: 0.85em; }
         }
     </style>
 </head>
@@ -431,15 +468,15 @@
                     
                     <div class="upload-box" id="uploadBox">
                         <input type="file" id="bgInput" accept="image/*">
-                        <div id="uploadContent">
-                            <p style="font-size: 1.8em; margin-bottom: 6px;">📸</p>
-                            <p style="font-weight: 600; margin-bottom: 4px; font-size: 0.9em;">Click to Upload Background</p>
-                            <p style="font-size: 0.8em; color: #666;">PNG or JPG</p>
+                        <div class="upload-content" id="uploadContent">
+                            <p style="font-size: 1.5em; margin-bottom: 4px;">📸</p>
+                            <p style="font-weight: 600; margin-bottom: 3px; font-size: 0.85em;">Click to Upload</p>
+                            <p style="font-size: 0.7em; color: #666;">PNG or JPG</p>
                         </div>
                         <img id="uploadPreview" class="upload-preview">
                     </div>
 
-                    <label for="quotesInput" style="font-weight: 600; margin-bottom: 6px; display: block; font-size: 0.88em;">Enter Quotes (one per line):</label>
+                    <label for="quotesInput" style="font-weight: 600; margin-bottom: 5px; display: block; font-size: 0.8em;">Enter Quotes (one per line):</label>
                     <textarea id="quotesInput" class="quotes-input" placeholder="Faith moves mountains&#10;Trust builds bridges&#10;God's grace is sufficient"></textarea>
 
                     <div class="quick-actions">
@@ -457,16 +494,16 @@
                     <div class="controls-section">
                         <div class="collapsible-section">
                             <div class="collapsible-header" onclick="toggleSection('boxControls')">
-                                <h3 class="section-title" style="margin: 0; border: none; padding: 0; font-size: 0.95em;">🎨 Quote Box Style</h3>
-                                <span class="toggle-icon open" id="boxControlsIcon">▼</span>
+                                <h3 class="section-title" style="margin: 0; border: none; padding: 0; font-size: 0.85em;">🎨 Box Style</h3>
+                                <span class="toggle-icon" id="boxControlsIcon">▼</span>
                             </div>
-                            <div class="collapsible-content open" id="boxControls">
+                            <div class="collapsible-content" id="boxControls">
                                 <div class="control-group">
-                                    <label>Box Width: <span id="boxWidthValue">70%</span></label>
+                                    <label>Width: <span id="boxWidthValue">70%</span></label>
                                     <input type="range" id="boxWidth" min="50" max="90" value="70">
                                 </div>
                                 <div class="control-group">
-                                    <label>Box Height: <span id="boxHeightValue">35%</span></label>
+                                    <label>Height: <span id="boxHeightValue">35%</span></label>
                                     <input type="range" id="boxHeight" min="25" max="50" value="35">
                                 </div>
                                 <div class="control-group">
@@ -502,10 +539,10 @@
 
                         <div class="collapsible-section">
                             <div class="collapsible-header" onclick="toggleSection('textControls')">
-                                <h3 class="section-title" style="margin: 0; border: none; padding: 0; font-size: 0.95em;">✍️ Text Style</h3>
-                                <span class="toggle-icon open" id="textControlsIcon">▼</span>
+                                <h3 class="section-title" style="margin: 0; border: none; padding: 0; font-size: 0.85em;">✍️ Text Style</h3>
+                                <span class="toggle-icon" id="textControlsIcon">▼</span>
                             </div>
-                            <div class="collapsible-content open" id="textControls">
+                            <div class="collapsible-content" id="textControls">
                                 <div class="control-group">
                                     <label>Font Family</label>
                                     <select id="fontFamily">
@@ -604,8 +641,10 @@
 
     <script>
         function toggleSection(id) {
-            document.getElementById(id).classList.toggle('open');
-            document.getElementById(id + 'Icon').classList.toggle('open');
+            const content = document.getElementById(id);
+            const icon = document.getElementById(id + 'Icon');
+            content.classList.toggle('open');
+            icon.classList.toggle('open');
         }
 
         let backgroundImage = null, quotes = [], currentQuoteIndex = 0;
@@ -725,7 +764,6 @@
             });
         }
 
-        // Event listeners for all controls
         $('boxWidth').oninput = e => {
             settings.boxWidth = e.target.value;
             $('boxWidthValue').textContent = e.target.value + '%';
@@ -893,7 +931,6 @@
             if (!backgroundImage || quotes.length === 0) return;
 
             const btn = $('exportBtn');
-            const msg = $('statusMessage');
             
             btn.disabled = true;
             btn.textContent = '⏳ Generating...';

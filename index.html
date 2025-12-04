@@ -4,67 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#1a1a1a">
-    <title>ELOHIMS Quote Generator</title>
+    <meta name="description" content="Professional quote generator with advanced styling">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ELOHIMS Pro">
+    <link rel="manifest" href="#" id="manifest-placeholder">
+    <title>ELOHIMS Quote Generator Pro</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { width: 100%; overflow-x: hidden; }
+        html, body { 
+            width: 100%; 
+            max-width: 100%;
+            overflow-x: hidden;
+            height: 100%;
+            position: fixed;
+        }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
-            min-height: 100vh;
-            padding: 5px;
+            padding: 0;
+            touch-action: pan-y;
         }
         .container {
-            max-width: 1400px;
+            max-width: 100%;
             width: 100%;
+            height: 100vh;
             margin: 0 auto;
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            overflow: hidden;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
         }
         header {
             background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
             color: #d4af37;
-            padding: 15px;
+            padding: 12px;
             text-align: center;
+            flex-shrink: 0;
+            position: relative;
         }
         header h1 {
-            font-size: clamp(1.3em, 5vw, 2.5em);
+            font-size: 1.5em;
             font-weight: 300;
             letter-spacing: 2px;
             margin-bottom: 4px;
         }
         header p {
             color: #fff;
-            font-size: clamp(0.7em, 2vw, 0.9em);
+            font-size: 0.75em;
             opacity: 0.8;
         }
+        .version-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: #d4af37;
+            color: #1a1a1a;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.7em;
+            font-weight: 700;
+        }
+        .install-prompt {
+            background: #d4af37;
+            color: #1a1a1a;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.85em;
+            font-weight: 600;
+            display: none;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        .install-prompt.show { display: block; }
         .main-content {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-            padding: 12px;
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
         }
-        @media (min-width: 1024px) {
-            .main-content {
-                grid-template-columns: 360px 1fr;
-                gap: 20px;
-                padding: 20px;
-            }
-        }
-        .upload-section {
+        .section {
             background: #fafafa;
             padding: 12px;
             border-radius: 8px;
-            border: 2px dashed #d4af37;
-            height: fit-content;
+            margin-bottom: 10px;
         }
         .section-title {
-            font-size: clamp(0.9em, 3vw, 1.1em);
+            font-size: 1em;
             color: #1a1a1a;
             margin-bottom: 10px;
             font-weight: 600;
@@ -75,19 +104,18 @@
             background: white;
             border: 2px dashed #ccc;
             border-radius: 8px;
-            padding: 18px;
+            padding: 20px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
             margin-bottom: 10px;
-            min-height: 90px;
+            min-height: 100px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            position: relative;
         }
-        .upload-box:hover, .upload-box:active {
+        .upload-box:active {
             border-color: #d4af37;
             background: #fffef8;
         }
@@ -95,15 +123,9 @@
             border-color: #4caf50;
             background: #f1f8f4;
         }
-        .upload-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            pointer-events: none;
-        }
         .upload-preview {
             max-width: 100%;
-            max-height: 80px;
+            max-height: 100px;
             border-radius: 4px;
             display: none;
             margin-top: 8px;
@@ -113,121 +135,66 @@
         
         .quotes-input {
             width: 100%;
-            min-height: 80px;
-            padding: 10px;
+            min-height: 120px;
+            padding: 12px;
             border: 2px solid #ddd;
             border-radius: 8px;
             font-family: inherit;
-            font-size: 0.85em;
+            font-size: 0.95em;
             resize: vertical;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         .quotes-input:focus {
             outline: none;
             border-color: #d4af37;
         }
+        .attribution-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+        }
+        .attribution-input:focus {
+            outline: none;
+            border-color: #d4af37;
+        }
+        .help-text {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: -5px;
+            margin-bottom: 10px;
+            padding: 0 5px;
+        }
         .quick-actions {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 6px;
-            margin-bottom: 8px;
+            gap: 8px;
+            margin-bottom: 10px;
         }
         .preset-templates {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 6px;
+            gap: 8px;
             margin-bottom: 10px;
         }
-        .quick-btn, .preset-btn {
-            padding: 8px;
+        .btn {
+            padding: 12px;
             background: white;
             border: 2px solid #ddd;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 0.75em;
-            font-weight: 500;
+            font-size: 0.9em;
+            font-weight: 600;
             transition: all 0.3s;
-            white-space: nowrap;
+            text-align: center;
         }
-        .quick-btn:hover, .preset-btn:hover,
-        .quick-btn:active, .preset-btn:active {
+        .btn:active {
             border-color: #d4af37;
             background: #fffef8;
-        }
-        .controls-section { margin-top: 10px; }
-        .control-group { margin-bottom: 8px; }
-        .control-group label {
-            display: block;
-            margin-bottom: 4px;
-            color: #333;
-            font-weight: 500;
-            font-size: 0.75em;
-        }
-        .control-group select {
-            width: 100%;
-            padding: 6px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            font-size: 0.8em;
-        }
-        .control-group input[type="range"] {
-            width: 100%;
-            padding: 0;
-            height: 24px;
-            -webkit-appearance: none;
-            appearance: none;
-            background: transparent;
-            cursor: pointer;
-        }
-        .control-group input[type="range"]::-webkit-slider-track {
-            width: 100%;
-            height: 6px;
-            background: #ddd;
-            border-radius: 3px;
-        }
-        .control-group input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            background: #d4af37;
-            border-radius: 50%;
-            cursor: pointer;
-            margin-top: -7px;
-        }
-        .control-group input[type="color"] {
-            width: 100%;
-            height: 35px;
-            border: 2px solid #ddd;
-            border-radius: 6px;
-            cursor: pointer;
-            padding: 2px;
-        }
-        .align-buttons {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 5px;
-        }
-        .align-btn {
-            padding: 6px;
-            border: 2px solid #ddd;
-            background: white;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 500;
-            font-size: 0.75em;
-        }
-        .align-btn:hover, .align-btn:active { border-color: #d4af37; }
-        .align-btn.active {
-            background: #d4af37;
-            color: white;
-            border-color: #d4af37;
-        }
-        .preview-section {
-            background: #fafafa;
-            padding: 12px;
-            border-radius: 8px;
+            transform: scale(0.98);
         }
         .canvas-wrapper {
             background: white;
@@ -238,6 +205,7 @@
         }
         .canvas-container {
             width: 100%;
+            max-width: 100%;
             overflow: hidden;
             position: relative;
             background: #000;
@@ -248,6 +216,7 @@
             position: relative;
             background: #f0f0f0;
             transform-origin: top left;
+            overflow: hidden;
         }
         .canvas-background {
             position: absolute;
@@ -259,11 +228,10 @@
         }
         .quote-box {
             position: absolute;
-            background: rgba(255, 255, 255, 0.95);
-            border: 3px solid #8B0000;
             border-radius: 25px;
             padding: 50px;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
@@ -275,6 +243,23 @@
             font-weight: 600;
             word-wrap: break-word;
             max-width: 100%;
+            margin-bottom: 0;
+            font-feature-settings: "liga" 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .quote-attribution {
+            font-size: 28px;
+            line-height: 1.4;
+            color: #555;
+            font-weight: 400;
+            font-style: italic;
+            margin-top: 25px;
+            word-wrap: break-word;
+            max-width: 100%;
+            font-feature-settings: "liga" 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         .placeholder-overlay {
             position: absolute;
@@ -283,6 +268,7 @@
             width: 100%;
             height: 100%;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             color: #999;
@@ -296,24 +282,27 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 8px;
+            padding: 12px;
             background: white;
             border-top: 2px solid #f0f0f0;
-            flex-wrap: wrap;
-            gap: 6px;
+            gap: 10px;
         }
         .nav-btn {
-            padding: 6px 12px;
+            padding: 10px 20px;
             background: #1a1a1a;
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
             transition: all 0.3s;
-            font-size: 0.8em;
+            font-size: 0.9em;
+            min-width: 80px;
         }
-        .nav-btn:hover, .nav-btn:active { background: #d4af37; }
+        .nav-btn:active { 
+            background: #d4af37;
+            transform: scale(0.98);
+        }
         .nav-btn:disabled {
             background: #ccc;
             cursor: not-allowed;
@@ -321,51 +310,197 @@
         .quote-counter {
             font-weight: 600;
             color: #333;
-            font-size: 0.8em;
+            font-size: 0.9em;
         }
-        .export-section { padding: 0 12px 12px 12px; }
-        .export-options {
+        .collapsible-header {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f5f5f5;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .collapsible-content.open { max-height: 3000px; }
+        .toggle-icon {
+            transition: transform 0.3s;
+            font-size: 1.2em;
+            color: #d4af37;
+            font-weight: bold;
+        }
+        .toggle-icon.open { transform: rotate(180deg); }
+        .control-group { margin-bottom: 12px; }
+        .control-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+        .control-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+        .control-group input[type="range"] {
+            width: 100%;
+            height: 50px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            cursor: pointer;
+            padding: 15px 0;
+        }
+        .control-group input[type="range"]::-webkit-slider-track {
+            width: 100%;
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+        }
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 32px;
+            height: 32px;
+            background: #d4af37;
+            border-radius: 50%;
+            cursor: grab;
+            margin-top: -11px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            border: 3px solid white;
+        }
+        .control-group input[type="range"]:active::-webkit-slider-thumb {
+            cursor: grabbing;
+            transform: scale(1.1);
+        }
+        .control-group input[type="range"]::-moz-range-track {
+            width: 100%;
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+        }
+        .control-group input[type="range"]::-moz-range-thumb {
+            width: 32px;
+            height: 32px;
+            background: #d4af37;
+            border-radius: 50%;
+            cursor: grab;
+            border: 3px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        .control-group input[type="range"]:active::-moz-range-thumb {
+            cursor: grabbing;
+            transform: scale(1.1);
+        }
+        .control-group input[type="color"] {
+            width: 100%;
+            height: 50px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .control-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+        .control-group input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .checkbox-wrapper label {
+            margin-bottom: 0;
+            cursor: pointer;
+        }
+        .align-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        .align-btn {
+            padding: 12px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+        .align-btn:active { 
+            border-color: #d4af37;
+            transform: scale(0.98);
+        }
+        .align-btn.active {
+            background: #d4af37;
+            color: white;
+            border-color: #d4af37;
+        }
+        .color-pair {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 8px;
-            margin-bottom: 8px;
+        }
+        .export-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
         }
         .option-group {
             background: #fafafa;
-            padding: 8px;
+            padding: 10px;
             border-radius: 8px;
             border: 2px solid #e0e0e0;
         }
         .option-group label {
             display: block;
             font-weight: 600;
-            margin-bottom: 4px;
-            font-size: 0.75em;
+            margin-bottom: 6px;
+            font-size: 0.85em;
             color: #333;
         }
         .option-group select {
             width: 100%;
-            padding: 6px;
+            padding: 10px;
             border: 2px solid #ddd;
-            border-radius: 6px;
-            font-size: 0.8em;
+            border-radius: 8px;
+            font-size: 0.9em;
         }
         .export-btn {
             width: 100%;
-            padding: 12px;
+            padding: 16px;
             background: linear-gradient(135deg, #d4af37 0%, #c9a12c 100%);
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 0.85em;
+            font-size: 1em;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
             box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
         }
-        .export-btn:hover, .export-btn:active {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        .export-btn:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 10px rgba(212, 175, 55, 0.4);
         }
         .export-btn:disabled {
             background: #ccc;
@@ -375,11 +510,11 @@
         .export-btn.loading { background: #666; }
         .status-message {
             text-align: center;
-            margin-top: 8px;
-            padding: 8px;
-            border-radius: 6px;
-            font-weight: 500;
-            font-size: 0.75em;
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85em;
             display: none;
         }
         .status-message.success {
@@ -397,249 +532,469 @@
             color: #0c5460;
             display: block;
         }
-        .collapsible-section {
-            border-top: 1px solid #e0e0e0;
-            padding-top: 8px;
-            margin-top: 8px;
-        }
-        .collapsible-header {
-            cursor: pointer;
-            user-select: none;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 5px 0;
-            background: #f5f5f5;
-            padding: 8px;
-            border-radius: 6px;
-            margin-bottom: 8px;
-        }
-        .collapsible-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        .collapsible-content.open { max-height: 2000px; }
-        .toggle-icon {
-            transition: transform 0.3s;
-            font-size: 1em;
-            color: #d4af37;
-            font-weight: bold;
-        }
-        .toggle-icon.open { transform: rotate(180deg); }
-        .reset-btn {
-            padding: 8px;
-            background: #ff6b6b;
+        .action-btn {
+            padding: 12px;
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 0.75em;
-            font-weight: 500;
+            font-size: 0.9em;
+            font-weight: 600;
             transition: all 0.3s;
-            margin-top: 8px;
+            margin-top: 10px;
             width: 100%;
         }
-        .reset-btn:hover, .reset-btn:active { background: #ff5252; }
-        
-        @media (max-width: 640px) {
-            body { padding: 5px; }
-            .container { border-radius: 8px; }
-            header { padding: 10px; }
-            .main-content { padding: 8px; gap: 8px; }
-            .upload-section, .preview-section { padding: 10px; }
-            .export-section { padding: 0 8px 8px 8px; }
-            .collapsible-content { max-height: 0; }
-            .section-title { font-size: 0.85em; }
+        .action-btn.reset { background: #ff6b6b; }
+        .action-btn.save { background: #4caf50; }
+        .action-btn.load { background: #2196f3; }
+        .action-btn:active { 
+            transform: scale(0.98);
+            filter: brightness(0.9);
+        }
+        .preset-manager {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .history-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .history-btn {
+            padding: 10px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .history-btn:active {
+            transform: scale(0.98);
+            background: #5a6268;
+        }
+        .history-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
+            <span class="version-badge">PRO v3</span>
             <h1>ELOHIMS</h1>
-            <p>Quote Generator — Professional Background-Based Formatter</p>
+            <p>Professional Quote Generator</p>
         </header>
 
-        <div class="main-content">
-            <div class="left-panel">
-                <div class="upload-section">
-                    <h2 class="section-title">📁 Upload & Input</h2>
-                    
-                    <div class="upload-box" id="uploadBox">
-                        <input type="file" id="bgInput" accept="image/*">
-                        <div class="upload-content" id="uploadContent">
-                            <p style="font-size: 1.5em; margin-bottom: 4px;">📸</p>
-                            <p style="font-weight: 600; margin-bottom: 3px; font-size: 0.85em;">Click to Upload</p>
-                            <p style="font-size: 0.7em; color: #666;">PNG or JPG</p>
-                        </div>
-                        <img id="uploadPreview" class="upload-preview">
-                    </div>
-
-                    <label for="quotesInput" style="font-weight: 600; margin-bottom: 5px; display: block; font-size: 0.8em;">Enter Quotes (one per line):</label>
-                    <textarea id="quotesInput" class="quotes-input" placeholder="Faith moves mountains&#10;Trust builds bridges&#10;God's grace is sufficient"></textarea>
-
-                    <div class="quick-actions">
-                        <button class="quick-btn" id="clearBtn">🗑️ Clear All</button>
-                        <button class="quick-btn" id="sampleBtn">✨ Sample</button>
-                    </div>
-
-                    <div class="preset-templates">
-                        <button class="preset-btn" data-preset="elegant">🎨 Elegant</button>
-                        <button class="preset-btn" data-preset="bold">💪 Bold</button>
-                        <button class="preset-btn" data-preset="minimal">⚪ Minimal</button>
-                        <button class="preset-btn" data-preset="vibrant">🌈 Vibrant</button>
-                    </div>
-
-                    <div class="controls-section">
-                        <div class="collapsible-section">
-                            <div class="collapsible-header" onclick="toggleSection('boxControls')">
-                                <h3 class="section-title" style="margin: 0; border: none; padding: 0; font-size: 0.85em;">🎨 Box Style</h3>
-                                <span class="toggle-icon" id="boxControlsIcon">▼</span>
-                            </div>
-                            <div class="collapsible-content" id="boxControls">
-                                <div class="control-group">
-                                    <label>Width: <span id="boxWidthValue">70%</span></label>
-                                    <input type="range" id="boxWidth" min="50" max="90" value="70">
-                                </div>
-                                <div class="control-group">
-                                    <label>Height: <span id="boxHeightValue">35%</span></label>
-                                    <input type="range" id="boxHeight" min="25" max="50" value="35">
-                                </div>
-                                <div class="control-group">
-                                    <label>Horizontal: <span id="boxHPosValue">50%</span></label>
-                                    <input type="range" id="boxHPos" min="0" max="100" value="50">
-                                </div>
-                                <div class="control-group">
-                                    <label>Vertical: <span id="boxVPosValue">50%</span></label>
-                                    <input type="range" id="boxVPos" min="0" max="100" value="50">
-                                </div>
-                                <div class="control-group">
-                                    <label>Box Color</label>
-                                    <input type="color" id="boxBgColor" value="#ffffff">
-                                </div>
-                                <div class="control-group">
-                                    <label>Opacity: <span id="boxOpacityValue">95%</span></label>
-                                    <input type="range" id="boxOpacity" min="50" max="100" value="95">
-                                </div>
-                                <div class="control-group">
-                                    <label>Border Color</label>
-                                    <input type="color" id="borderColor" value="#8B0000">
-                                </div>
-                                <div class="control-group">
-                                    <label>Border: <span id="borderWidthValue">3px</span></label>
-                                    <input type="range" id="borderWidth" min="0" max="10" value="3">
-                                </div>
-                                <div class="control-group">
-                                    <label>Corners: <span id="cornerRadiusValue">25px</span></label>
-                                    <input type="range" id="cornerRadius" min="0" max="50" value="25">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="collapsible-section">
-                            <div class="collapsible-header" onclick="toggleSection('textControls')">
-                                <h3 class="section-title" style="margin: 0; border: none; padding: 0; font-size: 0.85em;">✍️ Text Style</h3>
-                                <span class="toggle-icon" id="textControlsIcon">▼</span>
-                            </div>
-                            <div class="collapsible-content" id="textControls">
-                                <div class="control-group">
-                                    <label>Font Family</label>
-                                    <select id="fontFamily">
-                                        <option value="Arial, sans-serif">Arial</option>
-                                        <option value="'Times New Roman', serif">Times New Roman</option>
-                                        <option value="Georgia, serif">Georgia</option>
-                                        <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
-                                        <option value="Verdana, sans-serif">Verdana</option>
-                                        <option value="'Impact', sans-serif">Impact</option>
-                                        <option value="'Comic Sans MS', cursive">Comic Sans</option>
-                                        <option value="'Courier New', monospace">Courier New</option>
-                                    </select>
-                                </div>
-                                <div class="control-group">
-                                    <label>Size: <span id="fontSizeValue">42px</span></label>
-                                    <input type="range" id="fontSize" min="24" max="72" value="42">
-                                </div>
-                                <div class="control-group">
-                                    <label>Font Color</label>
-                                    <input type="color" id="fontColor" value="#1a1a1a">
-                                </div>
-                                <div class="control-group">
-                                    <label>Weight: <span id="fontWeightValue">600</span></label>
-                                    <input type="range" id="fontWeight" min="300" max="900" step="100" value="600">
-                                </div>
-                                <div class="control-group">
-                                    <label>Line Height: <span id="lineHeightValue">1.6</span></label>
-                                    <input type="range" id="lineHeight" min="1" max="2.5" step="0.1" value="1.6">
-                                </div>
-                                <div class="control-group">
-                                    <label>Alignment</label>
-                                    <div class="align-buttons">
-                                        <button class="align-btn" data-align="left">Left</button>
-                                        <button class="align-btn active" data-align="center">Center</button>
-                                        <button class="align-btn" data-align="right">Right</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <button class="reset-btn" id="resetBtn">🔄 Reset All Settings</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="right-panel">
-                <div class="preview-section">
-                    <h2 class="section-title">👁️ Live Preview</h2>
-                    
-                    <div class="canvas-wrapper">
-                        <div class="canvas-container" id="canvasContainer">
-                            <div class="export-canvas" id="exportCanvas">
-                                <img id="canvasBg" class="canvas-background" style="display: none;">
-                                <div id="quoteBoxContainer">
-                                    <div class="quote-box" id="quoteBox">
-                                        <div class="quote-text" id="quoteText"></div>
-                                    </div>
-                                </div>
-                                <div class="placeholder-overlay" id="placeholderOverlay">
-                                    📸 Upload background and enter quotes to begin
-                                </div>
-                            </div>
-                        </div>
-                        <div class="preview-controls">
-                            <button class="nav-btn" id="prevBtn" disabled>← Prev</button>
-                            <div class="quote-counter" id="quoteCounter">No quotes</div>
-                            <button class="nav-btn" id="nextBtn" disabled>Next →</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="install-prompt" id="installPrompt">
+            📱 Tap here to install app for offline use
         </div>
 
-        <div class="export-section">
-            <div class="export-options">
-                <div class="option-group">
-                    <label>Format</label>
-                    <select id="exportFormat">
-                        <option value="png">PNG (Best Quality)</option>
-                        <option value="jpeg">JPEG (Smaller)</option>
-                    </select>
-                </div>
-                <div class="option-group">
-                    <label>Size</label>
-                    <select id="exportSize">
-                        <option value="1080">1080x1080 (Instagram)</option>
-                        <option value="1200">1200x1200 (High Res)</option>
-                        <option value="800">800x800 (Web)</option>
-                    </select>
+        <div class="main-content">
+            <div class="section">
+                <h2 class="section-title">📷 Upload Background</h2>
+                <div class="upload-box" id="uploadBox">
+                    <input type="file" id="bgInput" accept="image/*">
+                    <div class="upload-content" id="uploadContent">
+                        <p style="font-weight: 600; margin-bottom: 5px;">Tap to Upload Background</p>
+                        <p style="font-size: 0.8em; color: #666;">PNG or JPG recommended</p>
+                    </div>
+                    <img id="uploadPreview" class="upload-preview">
                 </div>
             </div>
-            <button class="export-btn" id="exportBtn" disabled>📦 Generate & Download ZIP</button>
-            <div class="status-message" id="statusMessage"></div>
+
+            <div class="section">
+                <h2 class="section-title">✏️ Enter Quotes</h2>
+                <textarea id="quotesInput" class="quotes-input" placeholder="Faith moves mountains&#10;Trust builds bridges&#10;God's grace is sufficient"></textarea>
+                
+                <label for="attributionInput" style="display: block; margin-bottom: 6px; color: #333; font-weight: 600; font-size: 0.9em;">
+                    👤 Quote Attribution (Optional)
+                </label>
+                <input type="text" id="attributionInput" class="attribution-input" placeholder="e.g., Pastor John, Apostle Paul, Anonymous">
+                <p class="help-text">💡 Leave blank for no attribution, or add author name to appear below each quote</p>
+                
+                <div class="quick-actions">
+                    <button class="btn" id="clearBtn">🗑️ Clear</button>
+                    <button class="btn" id="sampleBtn">✨ Sample</button>
+                </div>
+
+                <div class="preset-templates">
+                    <button class="btn" data-preset="elegant">🎨 Elegant</button>
+                    <button class="btn" data-preset="bold">💪 Bold</button>
+                    <button class="btn" data-preset="minimal">⚪ Minimal</button>
+                    <button class="btn" data-preset="vibrant">🌈 Vibrant</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">👁️ Preview</h2>
+                <div class="canvas-wrapper">
+                    <div class="canvas-container" id="canvasContainer">
+                        <div class="export-canvas" id="exportCanvas">
+                            <img id="canvasBg" class="canvas-background" style="display: none;">
+                            <div class="quote-box" id="quoteBox">
+                                <div class="quote-text" id="quoteText"></div>
+                                <div class="quote-attribution" id="quoteAttr" style="display: none;"></div>
+                            </div>
+                            <div class="placeholder-overlay" id="placeholderOverlay">
+                                <p style="font-weight: 600; margin-bottom: 8px; font-size: 1.1em;">📸 Upload & Create</p>
+                                <p style="font-size: 0.9em;">Add background and quotes to start</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="preview-controls">
+                        <button class="nav-btn" id="prevBtn" disabled>← Prev</button>
+                        <div class="quote-counter" id="quoteCounter">No quotes</div>
+                        <button class="nav-btn" id="nextBtn" disabled>Next →</button>
+                    </div>
+                </div>
+                
+                <div class="history-controls">
+                    <button class="history-btn" id="undoBtn" disabled>↶ Undo</button>
+                    <button class="history-btn" id="redoBtn" disabled>↷ Redo</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="collapsible-header" onclick="toggleSection('bgControls')">
+                    <h3 class="section-title" style="margin: 0; border: none; padding: 0;">🖼️ Background Effects</h3>
+                    <span class="toggle-icon" id="bgControlsIcon">▼</span>
+                </div>
+                <div class="collapsible-content" id="bgControls">
+                    <div class="control-group">
+                        <label>Blur: <span id="bgBlurValue">0px</span></label>
+                        <input type="range" id="bgBlur" min="0" max="20" value="0">
+                    </div>
+                    <div class="control-group">
+                        <label>Brightness: <span id="bgBrightnessValue">100%</span></label>
+                        <input type="range" id="bgBrightness" min="50" max="150" value="100">
+                    </div>
+                    <div class="control-group">
+                        <label>Contrast: <span id="bgContrastValue">100%</span></label>
+                        <input type="range" id="bgContrast" min="50" max="150" value="100">
+                    </div>
+                    <div class="control-group">
+                        <label>Saturation: <span id="bgSaturationValue">100%</span></label>
+                        <input type="range" id="bgSaturation" min="0" max="200" value="100">
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="collapsible-header" onclick="toggleSection('boxControls')">
+                    <h3 class="section-title" style="margin: 0; border: none; padding: 0;">🎨 Box Style</h3>
+                    <span class="toggle-icon" id="boxControlsIcon">▼</span>
+                </div>
+                <div class="collapsible-content" id="boxControls">
+                    <div class="control-group">
+                        <label>Width: <span id="boxWidthValue">70%</span></label>
+                        <input type="range" id="boxWidth" min="50" max="90" value="70">
+                    </div>
+                    <div class="control-group">
+                        <label>Height: <span id="boxHeightValue">35%</span></label>
+                        <input type="range" id="boxHeight" min="25" max="60" value="35">
+                    </div>
+                    <div class="control-group">
+                        <label>Padding: <span id="boxPaddingValue">50px</span></label>
+                        <input type="range" id="boxPadding" min="20" max="80" value="50" step="2">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Background Color</label>
+                        <input type="color" id="boxBgColor" value="#ffffff">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Opacity: <span id="boxOpacityValue">95%</span></label>
+                        <input type="range" id="boxOpacity" min="0" max="100" value="95" step="5">
+                    </div>
+                    
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="useGradient">
+                        <label for="useGradient">Use Gradient Background</label>
+                    </div>
+                    
+                    <div id="gradientControls" style="display: none;">
+                        <div class="control-group">
+                            <label>Gradient Color</label>
+                            <input type="color" id="boxGradientColor" value="#f0f0f0">
+                        </div>
+                        <div class="control-group">
+                            <label>Gradient Angle: <span id="gradientAngleValue">135°</span></label>
+                            <input type="range" id="gradientAngle" min="0" max="360" value="135" step="15">
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Border Color</label>
+                        <input type="color" id="borderColor" value="#8B0000">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Border Width: <span id="borderWidthValue">3px</span></label>
+                        <input type="range" id="borderWidth" min="0" max="10" value="3" step="1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Corner Radius: <span id="cornerRadiusValue">25px</span></label>
+                        <input type="range" id="cornerRadius" min="0" max="50" value="25" step="5">
+                    </div>
+                    
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="enableTextShadow">
+                        <label for="enableTextShadow">Enable Text Shadow</label>
+                    </div>
+                    <div id="shadowControls" style="display: none;">
+                        <div class="control-group">
+                            <label>Shadow Color</label>
+                            <input type="color" id="textShadowColor" value="#000000">
+                        </div>
+                        <div class="control-group">
+                            <label>Shadow Blur: <span id="shadowBlurValue">4px</span></label>
+                            <input type="range" id="shadowBlur" min="0" max="20" value="4">
+                        </div>
+                        <div class="control-group">
+                            <label>Shadow X: <span id="shadowXValue">2px</span></label>
+                            <input type="range" id="shadowX" min="-10" max="10" value="2">
+                        </div>
+                        <div class="control-group">
+                            <label>Shadow Y: <span id="shadowYValue">2px</span></label>
+                            <input type="range" id="shadowY" min="-10" max="10" value="2">
+                        </div>
+                    </div>
+                    
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="enableTextStroke">
+                        <label for="enableTextStroke">Enable Text Outline</label>
+                    </div>
+                    <div id="strokeControls" style="display: none;">
+                        <div class="control-group">
+                            <label>Outline Color</label>
+                            <input type="color" id="textStrokeColor" value="#ffffff">
+                        </div>
+                        <div class="control-group">
+                            <label>Outline Width: <span id="strokeWidthValue">2px</span></label>
+                            <input type="range" id="strokeWidth" min="1" max="5" value="2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="collapsible-header" onclick="toggleSection('attrControls')">
+                    <h3 class="section-title" style="margin: 0; border: none; padding: 0;">👤 Attribution Style</h3>
+                    <span class="toggle-icon" id="attrControlsIcon">▼</span>
+                </div>
+                <div class="collapsible-content" id="attrControls">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="showAttribution" checked>
+                        <label for="showAttribution">Show Attribution</label>
+                    </div>
+                    <div class="control-group">
+                        <label>Font</label>
+                        <select id="attrFontFamily">
+                            <option value="Arial, sans-serif">Arial</option>
+                            <option value="'Times New Roman', serif">Times New Roman</option>
+                            <option value="Georgia, serif">Georgia</option>
+                            <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+                            <option value="Verdana, sans-serif">Verdana</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label>Size: <span id="attrFontSizeValue">28px</span></label>
+                        <input type="range" id="attrFontSize" min="18" max="48" value="28" step="2">
+                    </div>
+                    <div class="control-group">
+                        <label>Color</label>
+                        <input type="color" id="attrFontColor" value="#555555">
+                    </div>
+                    <div class="control-group">
+                        <label>Weight: <span id="attrFontWeightValue">400</span></label>
+                        <input type="range" id="attrFontWeight" min="300" max="900" step="100" value="400">
+                    </div>
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="attrItalic" checked>
+                        <label for="attrItalic">Italic Style</label>
+                    </div>
+                    <div class="control-group">
+                        <label>Prefix</label>
+                        <select id="attrPrefix">
+                            <option value="—">— (em dash)</option>
+                            <option value="-">- (dash)</option>
+                            <option value="~">~ (tilde)</option>
+                            <option value="">None</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="collapsible-header" onclick="toggleSection('textControls')">
+                    <h3 class="section-title" style="margin: 0; border: none; padding: 0;">✏️ Text Style</h3>
+                    <span class="toggle-icon" id="textControlsIcon">▼</span>
+                </div>
+                <div class="collapsible-content" id="textControls">
+                    <div class="control-group">
+                        <label>Font Family</label>
+                        <select id="fontFamily">
+                            <option value="Arial, sans-serif">Arial</option>
+                            <option value="'Times New Roman', serif">Times New Roman</option>
+                            <option value="Georgia, serif">Georgia</option>
+                            <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+                            <option value="Verdana, sans-serif">Verdana</option>
+                            <option value="'Courier New', monospace">Courier New</option>
+                            <option value="'Comic Sans MS', cursive">Comic Sans MS</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Font Size: <span id="fontSizeValue">42px</span></label>
+                        <input type="range" id="fontSize" min="24" max="72" value="42" step="2">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Text Color</label>
+                        <input type="color" id="fontColor" value="#1a1a1a">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Font Weight: <span id="fontWeightValue">600</span></label>
+                        <input type="range" id="fontWeight" min="300" max="900" value="600" step="100">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Line Height: <span id="lineHeightValue">1.6</span></label>
+                        <input type="range" id="lineHeight" min="1" max="2.5" value="1.6" step="0.1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Letter Spacing: <span id="letterSpacingValue">0px</span></label>
+                        <input type="range" id="letterSpacing" min="-3" max="10" value="0" step="1">
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Text Alignment</label>
+                        <div class="align-buttons">
+                            <button class="align-btn" data-align="left">← Left</button>
+                            <button class="align-btn active" data-align="center">Center</button>
+                            <button class="align-btn" data-align="right">Right →</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">💾 Preset Manager</h2>
+                <div class="control-group">
+                    <label>Preset Name</label>
+                    <input type="text" id="presetName" placeholder="Enter preset name...">
+                </div>
+                <div class="preset-manager">
+                    <button class="action-btn save" id="savePresetBtn">💾 Save Preset</button>
+                    <button class="action-btn load" id="loadPresetBtn">📂 Load Preset</button>
+                </div>
+                <button class="action-btn" style="background: #ff9800;" id="exportSettingsBtn">📤 Export Settings</button>
+                <button class="action-btn" style="background: #9c27b0;" id="importSettingsBtn">📥 Import Settings</button>
+                <input type="file" id="settingsFileInput" accept=".json" style="display: none;">
+            </div>
+
+            <div class="section">
+                <button class="action-btn reset" id="resetBtn">🔄 Reset All Settings</button>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">📦 Export</h2>
+                <div class="export-options">
+                    <div class="option-group">
+                        <label>Format</label>
+                        <select id="exportFormat">
+                            <option value="png">PNG</option>
+                            <option value="jpeg">JPEG</option>
+                        </select>
+                    </div>
+                    <div class="option-group">
+                        <label>Size</label>
+                        <select id="exportSize">
+                            <option value="1080">1080x1080</option>
+                            <option value="1200">1200x1200</option>
+                            <option value="800">800x800</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="export-btn" id="exportBtn" disabled>📦 Generate & Download</button>
+                <div class="status-message" id="statusMessage"></div>
+            </div>
         </div>
     </div>
 
     <script>
+        // PWA Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                const swCode = `
+                    const CACHE_NAME = 'elohims-v3';
+                    const urlsToCache = ['/'];
+                    self.addEventListener('install', event => {
+                        event.waitUntil(
+                            caches.open(CACHE_NAME)
+                                .then(cache => cache.addAll(urlsToCache))
+                                .catch(err => console.error('Cache error:', err))
+                        );
+                    });
+                    self.addEventListener('fetch', event => {
+                        event.respondWith(
+                            caches.match(event.request)
+                                .then(response => response || fetch(event.request))
+                                .catch(err => fetch(event.request))
+                        );
+                    });
+                `;
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                navigator.serviceWorker.register(swUrl)
+                    .then(() => console.log('Service Worker registered'))
+                    .catch(err => console.warn('SW registration failed:', err));
+            });
+        }
+
+        // PWA Install
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installPrompt').classList.add('show');
+        });
+
+        document.getElementById('installPrompt').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                document.getElementById('installPrompt').classList.remove('show');
+            }
+        });
+
+        // Manifest
+        const manifestData = {
+            name: 'ELOHIMS Quote Generator Pro',
+            short_name: 'ELOHIMS Pro',
+            description: 'Professional quote generator with advanced styling',
+            start_url: '.',
+            display: 'standalone',
+            background_color: '#1a1a1a',
+            theme_color: '#1a1a1a',
+            icons: [
+                {src: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect fill="%231a1a1a" width="192" height="192"/><text x="96" y="120" font-size="80" text-anchor="middle" fill="%23d4af37" font-weight="bold">E</text></svg>', sizes: '192x192', type: 'image/svg+xml'},
+                {src: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect fill="%231a1a1a" width="512" height="512"/><text x="256" y="320" font-size="200" text-anchor="middle" fill="%23d4af37" font-weight="bold">E</text></svg>', sizes: '512x512', type: 'image/svg+xml'}
+            ]
+        };
+        const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
+        document.getElementById('manifest-placeholder').href = URL.createObjectURL(manifestBlob);
+
         function toggleSection(id) {
             const content = document.getElementById(id);
             const icon = document.getElementById(id + 'Icon');
@@ -647,25 +1002,67 @@
             icon.classList.toggle('open');
         }
 
-        let backgroundImage = null, quotes = [], currentQuoteIndex = 0;
+        let backgroundImage = null, quotes = [], currentQuoteIndex = 0, attribution = '';
+        let history = [], historyIndex = -1;
         
         const defaultSettings = {
-            boxWidth: 70, boxHeight: 35, boxHPos: 50, boxVPos: 50,
-            boxBgColor: '#ffffff', boxOpacity: 95, borderColor: '#8B0000',
-            borderWidth: 3, cornerRadius: 25, fontFamily: 'Arial, sans-serif',
-            fontSize: 42, fontColor: '#1a1a1a', fontWeight: 600, lineHeight: 1.6, textAlign: 'center'
+            boxWidth: 70, boxHeight: 35, boxPadding: 50, boxBgColor: '#ffffff', boxOpacity: 95,
+            useGradient: false, boxGradientColor: '#f0f0f0', gradientAngle: 135,
+            borderColor: '#8B0000', borderWidth: 3, cornerRadius: 25,
+            fontFamily: 'Arial, sans-serif', fontSize: 42, fontColor: '#1a1a1a',
+            fontWeight: 600, lineHeight: 1.6, letterSpacing: 0, textAlign: 'center',
+            enableTextShadow: false, textShadowColor: '#000000', shadowBlur: 4, shadowX: 2, shadowY: 2,
+            enableTextStroke: false, textStrokeColor: '#ffffff', strokeWidth: 2,
+            showAttribution: true,
+            attrFontFamily: 'Arial, sans-serif', attrFontSize: 28, attrFontColor: '#555555',
+            attrFontWeight: 400, attrItalic: true, attrPrefix: '—',
+            bgBlur: 0, bgBrightness: 100, bgContrast: 100, bgSaturation: 100
         };
 
         let settings = {...defaultSettings};
 
         const presets = {
-            elegant: {boxBgColor: '#ffffff', boxOpacity: 90, borderColor: '#d4af37', borderWidth: 2, cornerRadius: 30, fontFamily: 'Georgia, serif', fontSize: 38, fontColor: '#2c3e50', fontWeight: 400, lineHeight: 1.8},
-            bold: {boxBgColor: '#1a1a1a', boxOpacity: 95, borderColor: '#ff4444', borderWidth: 6, cornerRadius: 10, fontFamily: "'Impact', sans-serif", fontSize: 48, fontColor: '#ffffff', fontWeight: 700, lineHeight: 1.4},
-            minimal: {boxBgColor: '#f8f9fa', boxOpacity: 85, borderColor: '#e9ecef', borderWidth: 1, cornerRadius: 5, fontFamily: 'Arial, sans-serif', fontSize: 36, fontColor: '#495057', fontWeight: 400, lineHeight: 1.7},
-            vibrant: {boxBgColor: '#ff6b6b', boxOpacity: 90, borderColor: '#4ecdc4', borderWidth: 5, cornerRadius: 20, fontFamily: "'Trebuchet MS', sans-serif", fontSize: 44, fontColor: '#ffffff', fontWeight: 700, lineHeight: 1.5}
+            elegant: {boxBgColor: '#ffffff', boxOpacity: 90, borderColor: '#d4af37', borderWidth: 2, cornerRadius: 30, fontFamily: 'Georgia, serif', fontSize: 38, fontColor: '#2c3e50', fontWeight: 400, lineHeight: 1.8, attrFontFamily: 'Georgia, serif', attrFontSize: 26, attrFontColor: '#7f8c8d', attrFontWeight: 300},
+            bold: {boxBgColor: '#1a1a1a', boxOpacity: 95, borderColor: '#ff4444', borderWidth: 6, cornerRadius: 10, fontFamily: "'Impact', sans-serif", fontSize: 48, fontColor: '#ffffff', fontWeight: 700, lineHeight: 1.4, attrFontFamily: 'Arial, sans-serif', attrFontSize: 30, attrFontColor: '#cccccc', attrFontWeight: 600},
+            minimal: {boxBgColor: '#f8f9fa', boxOpacity: 85, borderColor: '#e9ecef', borderWidth: 1, cornerRadius: 5, fontFamily: 'Arial, sans-serif', fontSize: 36, fontColor: '#495057', fontWeight: 400, lineHeight: 1.7, attrFontFamily: 'Arial, sans-serif', attrFontSize: 24, attrFontColor: '#6c757d', attrFontWeight: 300},
+            vibrant: {boxBgColor: '#ff6b6b', boxOpacity: 90, borderColor: '#4ecdc4', borderWidth: 5, cornerRadius: 20, fontFamily: "'Trebuchet MS', sans-serif", fontSize: 44, fontColor: '#ffffff', fontWeight: 700, lineHeight: 1.5, attrFontFamily: "'Trebuchet MS', sans-serif", attrFontSize: 28, attrFontColor: '#ffe66d', attrFontWeight: 600}
         };
 
         const $ = id => document.getElementById(id);
+
+        function saveToHistory() {
+            history = history.slice(0, historyIndex + 1);
+            history.push({...settings});
+            historyIndex++;
+            if (history.length > 50) {
+                history.shift();
+                historyIndex--;
+            }
+            updateHistoryButtons();
+        }
+
+        function updateHistoryButtons() {
+            $('undoBtn').disabled = historyIndex <= 0;
+            $('redoBtn').disabled = historyIndex >= history.length - 1;
+        }
+
+        $('undoBtn').onclick = () => {
+            if (historyIndex > 0) {
+                historyIndex--;
+                settings = {...history[historyIndex]};
+                applySettings();
+                updatePreview();
+            }
+        };
+
+        $('redoBtn').onclick = () => {
+            if (historyIndex < history.length - 1) {
+                historyIndex++;
+                settings = {...history[historyIndex]};
+                applySettings();
+                updatePreview();
+            }
+        };
 
         function scaleCanvas() {
             const w = $('canvasContainer').offsetWidth;
@@ -674,16 +1071,34 @@
             $('canvasContainer').style.height = (1080 * scale) + 'px';
         }
 
-        window.addEventListener('resize', scaleCanvas);
-        setTimeout(scaleCanvas, 100);
-
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(scaleCanvas, 150);
+        });
+        // Ensure fonts are loaded before scaling
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(() => {
+                setTimeout(scaleCanvas, 200);
+            });
+        } else {
+            setTimeout(scaleCanvas, 200);
+        }
+        
         $('uploadBox').onclick = () => $('bgInput').click();
+        
+        let backgroundImageUrl = null;
         
         $('bgInput').onchange = e => {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = e => {
+                    // Clean up previous URL if exists
+                    if (backgroundImageUrl) {
+                        URL.revokeObjectURL(backgroundImageUrl);
+                    }
+                    
                     backgroundImage = e.target.result;
                     $('uploadPreview').src = backgroundImage;
                     $('uploadPreview').classList.add('visible');
@@ -706,9 +1121,16 @@
             updateExportButton();
         };
 
+        $('attributionInput').oninput = () => {
+            attribution = $('attributionInput').value.trim();
+            updatePreview();
+        };
+
         $('clearBtn').onclick = () => {
             $('quotesInput').value = '';
+            $('attributionInput').value = '';
             quotes = [];
+            attribution = '';
             currentQuoteIndex = 0;
             updateNavigation();
             updatePreview();
@@ -717,20 +1139,24 @@
 
         $('sampleBtn').onclick = () => {
             $('quotesInput').value = 'Faith moves mountains\nTrust builds bridges\nGod\'s grace is sufficient\nEvery challenge is growth\nLet your light shine';
+            $('attributionInput').value = 'Pastor John';
             $('quotesInput').oninput();
+            $('attributionInput').oninput();
         };
 
         $('resetBtn').onclick = () => {
             settings = {...defaultSettings};
             applySettings();
             updatePreview();
+            saveToHistory();
         };
 
-        document.querySelectorAll('.preset-btn').forEach(btn => {
+        document.querySelectorAll('.btn[data-preset]').forEach(btn => {
             btn.onclick = () => {
                 Object.assign(settings, presets[btn.dataset.preset]);
                 applySettings();
                 updatePreview();
+                saveToHistory();
             };
         });
 
@@ -739,13 +1165,16 @@
             $('boxWidthValue').textContent = settings.boxWidth + '%';
             $('boxHeight').value = settings.boxHeight;
             $('boxHeightValue').textContent = settings.boxHeight + '%';
-            $('boxHPos').value = settings.boxHPos;
-            $('boxHPosValue').textContent = settings.boxHPos + '%';
-            $('boxVPos').value = settings.boxVPos;
-            $('boxVPosValue').textContent = settings.boxVPos + '%';
+            $('boxPadding').value = settings.boxPadding;
+            $('boxPaddingValue').textContent = settings.boxPadding + 'px';
             $('boxBgColor').value = settings.boxBgColor;
             $('boxOpacity').value = settings.boxOpacity;
             $('boxOpacityValue').textContent = settings.boxOpacity + '%';
+            $('useGradient').checked = settings.useGradient;
+            $('boxGradientColor').value = settings.boxGradientColor;
+            $('gradientAngle').value = settings.gradientAngle;
+            $('gradientAngleValue').textContent = settings.gradientAngle + '°';
+            $('gradientControls').style.display = settings.useGradient ? 'block' : 'none';
             $('borderColor').value = settings.borderColor;
             $('borderWidth').value = settings.borderWidth;
             $('borderWidthValue').textContent = settings.borderWidth + 'px';
@@ -759,113 +1188,400 @@
             $('fontWeightValue').textContent = settings.fontWeight;
             $('lineHeight').value = settings.lineHeight;
             $('lineHeightValue').textContent = settings.lineHeight;
+            $('letterSpacing').value = settings.letterSpacing;
+            $('letterSpacingValue').textContent = settings.letterSpacing + 'px';
+            $('enableTextShadow').checked = settings.enableTextShadow;
+            $('shadowControls').style.display = settings.enableTextShadow ? 'block' : 'none';
+            $('textShadowColor').value = settings.textShadowColor;
+            $('shadowBlur').value = settings.shadowBlur;
+            $('shadowBlurValue').textContent = settings.shadowBlur + 'px';
+            $('shadowX').value = settings.shadowX;
+            $('shadowXValue').textContent = settings.shadowX + 'px';
+            $('shadowY').value = settings.shadowY;
+            $('shadowYValue').textContent = settings.shadowY + 'px';
+            $('enableTextStroke').checked = settings.enableTextStroke;
+            $('strokeControls').style.display = settings.enableTextStroke ? 'block' : 'none';
+            $('textStrokeColor').value = settings.textStrokeColor;
+            $('strokeWidth').value = settings.strokeWidth;
+            $('strokeWidthValue').textContent = settings.strokeWidth + 'px';
+            $('showAttribution').checked = settings.showAttribution;
+            $('attrFontFamily').value = settings.attrFontFamily;
+            $('attrFontSize').value = settings.attrFontSize;
+            $('attrFontSizeValue').textContent = settings.attrFontSize + 'px';
+            $('attrFontColor').value = settings.attrFontColor;
+            $('attrFontWeight').value = settings.attrFontWeight;
+            $('attrFontWeightValue').textContent = settings.attrFontWeight;
+            $('attrItalic').checked = settings.attrItalic;
+            $('attrPrefix').value = settings.attrPrefix;
+            $('bgBlur').value = settings.bgBlur;
+            $('bgBlurValue').textContent = settings.bgBlur + 'px';
+            $('bgBrightness').value = settings.bgBrightness;
+            $('bgBrightnessValue').textContent = settings.bgBrightness + '%';
+            $('bgContrast').value = settings.bgContrast;
+            $('bgContrastValue').textContent = settings.bgContrast + '%';
+            $('bgSaturation').value = settings.bgSaturation;
+            $('bgSaturationValue').textContent = settings.bgSaturation + '%';
+            
             document.querySelectorAll('.align-btn').forEach(b => {
                 b.classList.toggle('active', b.dataset.align === settings.textAlign);
             });
+            
+            // Prevent slider thumb from triggering parent scroll on mobile
+            document.querySelectorAll('input[type="range"]').forEach(slider => {
+                slider.addEventListener('touchstart', (e) => {
+                    e.stopPropagation();
+                }, { passive: true });
+            });
         }
 
+        // Auto-save settings
+        function autoSaveSettings() {
+            try {
+                localStorage.setItem('elohims_last_settings', JSON.stringify(settings));
+            } catch (e) {
+                console.warn('Could not save settings:', e);
+            }
+        }
+
+        // Load last settings on startup
+        function loadLastSettings() {
+            try {
+                const saved = localStorage.getItem('elohims_last_settings');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    settings = {...defaultSettings, ...parsed};
+                    applySettings();
+                    updatePreview();
+                }
+            } catch (e) {
+                console.warn('Could not load settings:', e);
+            }
+        }
+
+        // Background Effects
+        $('bgBlur').oninput = e => {
+            settings.bgBlur = e.target.value;
+            $('bgBlurValue').textContent = e.target.value + 'px';
+            updatePreview();
+            autoSaveSettings();
+        };
+        $('bgBrightness').oninput = e => {
+            settings.bgBrightness = e.target.value;
+            $('bgBrightnessValue').textContent = e.target.value + '%';
+            updatePreview();
+            autoSaveSettings();
+        };
+        $('bgContrast').oninput = e => {
+            settings.bgContrast = e.target.value;
+            $('bgContrastValue').textContent = e.target.value + '%';
+            updatePreview();
+            autoSaveSettings();
+        };
+        $('bgSaturation').oninput = e => {
+            settings.bgSaturation = e.target.value;
+            $('bgSaturationValue').textContent = e.target.value + '%';
+            updatePreview();
+            autoSaveSettings();
+        };
+
+        // Box Controls
         $('boxWidth').oninput = e => {
             settings.boxWidth = e.target.value;
             $('boxWidthValue').textContent = e.target.value + '%';
             updatePreview();
+            autoSaveSettings();
         };
-
         $('boxHeight').oninput = e => {
             settings.boxHeight = e.target.value;
             $('boxHeightValue').textContent = e.target.value + '%';
             updatePreview();
+            autoSaveSettings();
         };
-
-        $('boxHPos').oninput = e => {
-            settings.boxHPos = e.target.value;
-            $('boxHPosValue').textContent = e.target.value + '%';
+        $('boxPadding').oninput = e => {
+            settings.boxPadding = e.target.value;
+            $('boxPaddingValue').textContent = e.target.value + 'px';
             updatePreview();
+            autoSaveSettings();
         };
-
-        $('boxVPos').oninput = e => {
-            settings.boxVPos = e.target.value;
-            $('boxVPosValue').textContent = e.target.value + '%';
-            updatePreview();
-        };
-
         $('boxBgColor').oninput = e => {
             settings.boxBgColor = e.target.value;
             updatePreview();
+            autoSaveSettings();
         };
-
         $('boxOpacity').oninput = e => {
             settings.boxOpacity = e.target.value;
             $('boxOpacityValue').textContent = e.target.value + '%';
             updatePreview();
+            autoSaveSettings();
         };
-
+        $('useGradient').onchange = e => {
+            settings.useGradient = e.target.checked;
+            $('gradientControls').style.display = e.target.checked ? 'block' : 'none';
+            updatePreview();
+            saveToHistory();
+        };
+        $('boxGradientColor').oninput = e => {
+            settings.boxGradientColor = e.target.value;
+            updatePreview();
+            autoSaveSettings();
+        };
+        $('gradientAngle').oninput = e => {
+            settings.gradientAngle = e.target.value;
+            $('gradientAngleValue').textContent = e.target.value + '°';
+            updatePreview();
+            autoSaveSettings();
+        };
         $('borderColor').oninput = e => {
             settings.borderColor = e.target.value;
             updatePreview();
+            autoSaveSettings();
         };
-
         $('borderWidth').oninput = e => {
             settings.borderWidth = e.target.value;
             $('borderWidthValue').textContent = e.target.value + 'px';
             updatePreview();
+            autoSaveSettings();
         };
-
         $('cornerRadius').oninput = e => {
             settings.cornerRadius = e.target.value;
             $('cornerRadiusValue').textContent = e.target.value + 'px';
             updatePreview();
+            autoSaveSettings();
         };
 
+        // Text Controls
         $('fontFamily').onchange = e => {
             settings.fontFamily = e.target.value;
             updatePreview();
+            saveToHistory();
         };
-
         $('fontSize').oninput = e => {
             settings.fontSize = e.target.value;
             $('fontSizeValue').textContent = e.target.value + 'px';
             updatePreview();
+            autoSaveSettings();
         };
-
         $('fontColor').oninput = e => {
             settings.fontColor = e.target.value;
             updatePreview();
+            autoSaveSettings();
         };
-
         $('fontWeight').oninput = e => {
             settings.fontWeight = e.target.value;
             $('fontWeightValue').textContent = e.target.value;
             updatePreview();
+            autoSaveSettings();
         };
-
         $('lineHeight').oninput = e => {
             settings.lineHeight = e.target.value;
             $('lineHeightValue').textContent = e.target.value;
             updatePreview();
+            autoSaveSettings();
         };
-
+        $('letterSpacing').oninput = e => {
+            settings.letterSpacing = e.target.value;
+            $('letterSpacingValue').textContent = e.target.value + 'px';
+            updatePreview();
+            autoSaveSettings();
+        };
         document.querySelectorAll('.align-btn').forEach(btn => {
             btn.onclick = e => {
                 document.querySelectorAll('.align-btn').forEach(b => b.classList.remove('active'));
                 e.target.classList.add('active');
                 settings.textAlign = e.target.dataset.align;
                 updatePreview();
+                saveToHistory();
             };
         });
 
+        // Text Effects
+        $('enableTextShadow').onchange = e => {
+            settings.enableTextShadow = e.target.checked;
+            $('shadowControls').style.display = e.target.checked ? 'block' : 'none';
+            updatePreview();
+            saveToHistory();
+        };
+        $('textShadowColor').oninput = e => {
+            settings.textShadowColor = e.target.value;
+            updatePreview();
+            autoSaveSettings();
+        };
+        $('shadowBlur').oninput = e => {
+            settings.shadowBlur = e.target.value;
+            $('shadowBlurValue').textContent = e.target.value + 'px';
+            updatePreview();
+            autoSaveSettings();
+        };
+        $('shadowX').oninput = e => {
+            settings.shadowX = e.target.value;
+            $('shadowXValue').textContent = e.target.value + 'px';
+            updatePreview();
+            autoSaveSettings();
+        };
+        $('shadowY').oninput = e => {
+            settings.shadowY = e.target.value;
+            $('shadowYValue').textContent = e.target.value + 'px';
+            updatePreview();
+            autoSaveSettings();
+        };
+        $('enableTextStroke').onchange = e => {
+            settings.enableTextStroke = e.target.checked;
+            $('strokeControls').style.display = e.target.checked ? 'block' : 'none';
+            updatePreview();
+            saveToHistory();
+        };
+        $('textStrokeColor').oninput = e => {
+            settings.textStrokeColor = e.target.value;
+            updatePreview();
+            autoSaveSettings();
+        };
+        $('strokeWidth').oninput = e => {
+            settings.strokeWidth = e.target.value;
+            $('strokeWidthValue').textContent = e.target.value + 'px';
+            updatePreview();
+            autoSaveSettings();
+        };
+
+        // Attribution Controls
+        $('showAttribution').onchange = e => {
+            settings.showAttribution = e.target.checked;
+            updatePreview();
+            saveToHistory();
+        };
+        $('attrFontFamily').onchange = e => {
+            settings.attrFontFamily = e.target.value;
+            updatePreview();
+            saveToHistory();
+        };
+        $('attrFontSize').oninput = e => {
+            settings.attrFontSize = e.target.value;
+            $('attrFontSizeValue').textContent = e.target.value + 'px';
+            updatePreview();
+            autoSaveSettings();
+        };
+        $('attrFontColor').oninput = e => {
+            settings.attrFontColor = e.target.value;
+            updatePreview();
+            autoSaveSettings();
+        };
+        $('attrFontWeight').oninput = e => {
+            settings.attrFontWeight = e.target.value;
+            $('attrFontWeightValue').textContent = e.target.value;
+            updatePreview();
+            autoSaveSettings();
+        };
+        $('attrItalic').onchange = e => {
+            settings.attrItalic = e.target.checked;
+            updatePreview();
+            saveToHistory();
+        };
+        $('attrPrefix').onchange = e => {
+            settings.attrPrefix = e.target.value;
+            updatePreview();
+            saveToHistory();
+        };
+
+        // Preset Manager
+        $('savePresetBtn').onclick = () => {
+            const name = $('presetName').value.trim();
+            if (!name) {
+                alert('Please enter a preset name');
+                return;
+            }
+            const presets = JSON.parse(localStorage.getItem('elohims_presets') || '{}');
+            presets[name] = {...settings};
+            localStorage.setItem('elohims_presets', JSON.stringify(presets));
+            showStatus(`✅ Preset "${name}" saved!`, 'success');
+            $('presetName').value = '';
+        };
+
+        $('loadPresetBtn').onclick = () => {
+            const name = $('presetName').value.trim();
+            if (!name) {
+                // Show available presets
+                const presets = JSON.parse(localStorage.getItem('elohims_presets') || '{}');
+                const presetNames = Object.keys(presets);
+                if (presetNames.length === 0) {
+                    alert('No saved presets found. Please enter a preset name to load.');
+                } else {
+                    alert('Available presets:\n\n' + presetNames.join('\n'));
+                }
+                return;
+            }
+            const presets = JSON.parse(localStorage.getItem('elohims_presets') || '{}');
+            if (!presets[name]) {
+                const available = Object.keys(presets);
+                showStatus(`❌ Preset "${name}" not found. Available: ${available.join(', ') || 'none'}`, 'error');
+                return;
+            }
+            settings = {...presets[name]};
+            applySettings();
+            updatePreview();
+            saveToHistory();
+            showStatus(`✅ Preset "${name}" loaded!`, 'success');
+            $('presetName').value = '';
+        };
+
+        $('exportSettingsBtn').onclick = () => {
+            const dataStr = JSON.stringify(settings, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'elohims-settings.json';
+            link.click();
+            URL.revokeObjectURL(url);
+            showStatus('✅ Settings exported!', 'success');
+        };
+
+        $('importSettingsBtn').onclick = () => {
+            $('settingsFileInput').click();
+        };
+
+        $('settingsFileInput').onchange = e => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    try {
+                        const imported = JSON.parse(e.target.result);
+                        settings = {...defaultSettings, ...imported};
+                        applySettings();
+                        updatePreview();
+                        saveToHistory();
+                        showStatus('✅ Settings imported!', 'success');
+                    } catch (err) {
+                        showStatus('❌ Invalid settings file', 'error');
+                    }
+                };
+                reader.readAsText(file);
+            }
+        };
+
+        // Navigation
         $('prevBtn').onclick = () => {
             if (currentQuoteIndex > 0) {
+                $('prevBtn').disabled = true;
+                $('nextBtn').disabled = true;
                 currentQuoteIndex--;
                 updateNavigation();
                 updatePreview();
+                setTimeout(() => {
+                    updateNavigation();
+                }, 100);
             }
         };
 
         $('nextBtn').onclick = () => {
             if (currentQuoteIndex < quotes.length - 1) {
+                $('prevBtn').disabled = true;
+                $('nextBtn').disabled = true;
                 currentQuoteIndex++;
                 updateNavigation();
                 updatePreview();
+                setTimeout(() => {
+                    updateNavigation();
+                }, 100);
             }
         };
 
@@ -898,8 +1614,22 @@
 
             $('placeholderOverlay').style.display = 'none';
             
+            // Apply background filters
+            const filters = `blur(${settings.bgBlur}px) brightness(${settings.bgBrightness}%) contrast(${settings.bgContrast}%) saturate(${settings.bgSaturation}%)`;
+            $('canvasBg').style.filter = filters;
+            
             const quote = quotes[currentQuoteIndex];
             $('quoteText').textContent = quote;
+            
+            // Update attribution
+            const attrElement = $('quoteAttr');
+            if (attribution && settings.showAttribution) {
+                const prefix = settings.attrPrefix ? settings.attrPrefix + ' ' : '';
+                attrElement.textContent = prefix + attribution;
+                attrElement.style.display = 'block';
+            } else {
+                attrElement.style.display = 'none';
+            }
             
             const rgb = hexToRgb(settings.boxBgColor);
             const opacity = settings.boxOpacity / 100;
@@ -907,10 +1637,18 @@
             const box = $('quoteBox');
             box.style.width = settings.boxWidth + '%';
             box.style.height = settings.boxHeight + '%';
-            box.style.left = settings.boxHPos + '%';
-            box.style.top = settings.boxVPos + '%';
+            box.style.padding = settings.boxPadding + 'px';
+            box.style.left = '50%';
+            box.style.top = '50%';
             box.style.transform = 'translate(-50%, -50%)';
-            box.style.background = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity})`;
+            
+            if (settings.useGradient) {
+                const rgb2 = hexToRgb(settings.boxGradientColor);
+                box.style.background = `linear-gradient(${settings.gradientAngle}deg, rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity}), rgba(${rgb2.r}, ${rgb2.g}, ${rgb2.b}, ${opacity}))`;
+            } else {
+                box.style.background = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity})`;
+            }
+            
             box.style.border = `${settings.borderWidth}px solid ${settings.borderColor}`;
             box.style.borderRadius = settings.cornerRadius + 'px';
             
@@ -920,7 +1658,28 @@
             text.style.color = settings.fontColor;
             text.style.fontWeight = settings.fontWeight;
             text.style.lineHeight = settings.lineHeight;
+            text.style.letterSpacing = settings.letterSpacing + 'px';
             text.style.textAlign = settings.textAlign;
+            
+            // Text effects
+            let textShadow = 'none';
+            if (settings.enableTextShadow) {
+                textShadow = `${settings.shadowX}px ${settings.shadowY}px ${settings.shadowBlur}px ${settings.textShadowColor}`;
+            }
+            text.style.textShadow = textShadow;
+            
+            if (settings.enableTextStroke) {
+                text.style.webkitTextStroke = `${settings.strokeWidth}px ${settings.textStrokeColor}`;
+            } else {
+                text.style.webkitTextStroke = 'none';
+            }
+            
+            // Style attribution
+            attrElement.style.fontFamily = settings.attrFontFamily;
+            attrElement.style.fontSize = settings.attrFontSize + 'px';
+            attrElement.style.color = settings.attrFontColor;
+            attrElement.style.fontWeight = settings.attrFontWeight;
+            attrElement.style.fontStyle = settings.attrItalic ? 'italic' : 'normal';
         }
 
         function updateExportButton() {
@@ -943,18 +1702,37 @@
                 const size = parseInt($('exportSize').value);
                 const scale = size / 1080;
                 
-                for (let i = 0; i < quotes.length; i++) {
+    for (let i = 0; i < quotes.length; i++) {
                     currentQuoteIndex = i;
                     updatePreview();
                     
-                    await new Promise(resolve => setTimeout(resolve, 150));
+                    // Wait for render and fonts to load properly
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    
+                    // Ensure fonts are loaded
+                    if (document.fonts && document.fonts.ready) {
+                        await document.fonts.ready;
+                    }
                     
                     const canvas = await html2canvas($('exportCanvas'), {
                         backgroundColor: null,
                         scale: scale * 2,
                         logging: false,
                         width: 1080,
-                        height: 1080
+                        height: 1080,
+                        useCORS: true,
+                        allowTaint: true,
+                        letterRendering: true,
+                        imageTimeout: 0,
+                        onclone: (clonedDoc) => {
+                            // Force font rendering in cloned document
+                            const clonedCanvas = clonedDoc.getElementById('exportCanvas');
+                            if (clonedCanvas) {
+                                clonedCanvas.style.fontSmooth = 'always';
+                                clonedCanvas.style.webkitFontSmoothing = 'antialiased';
+                                clonedCanvas.style.MozOsxFontSmoothing = 'grayscale';
+                            }
+                        }
                     });
                     
                     const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
@@ -987,10 +1765,22 @@
                 
             } catch (error) {
                 console.error('Export error:', error);
-                showStatus('❌ Error generating quotes. Please try again.', 'error');
+                let errorMsg = '❌ Error generating quotes. ';
+                if (error.message && error.message.includes('Tainted')) {
+                    errorMsg += 'Image CORS issue - try a different background image.';
+                } else if (error.message && error.message.includes('font')) {
+                    errorMsg += 'Font loading issue - please wait a moment and try again.';
+                } else if (error.name === 'SecurityError') {
+                    errorMsg += 'Security error - image may be from external source.';
+                } else if (error.message && error.message.includes('canvas')) {
+                    errorMsg += 'Canvas rendering failed - try reducing export size.';
+                } else {
+                    errorMsg += error.message || 'Please try again or check console for details.';
+                }
+                showStatus(errorMsg, 'error');
             } finally {
                 btn.disabled = false;
-                btn.textContent = '📦 Generate & Download ZIP';
+                btn.textContent = '📦 Generate & Download';
                 btn.classList.remove('loading');
             }
         };
@@ -1007,8 +1797,21 @@
             }
         }
 
+       // Initialize
+        loadLastSettings();
         updateNavigation();
         updateExportButton();
+        applySettings();
+        saveToHistory();
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (backgroundImageUrl) {
+                URL.revokeObjectURL(backgroundImageUrl);
+            }
+            autoSaveSettings();
+        });
     </script>
 </body>
 </html>
+                        

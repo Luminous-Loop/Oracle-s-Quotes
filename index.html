@@ -228,6 +228,9 @@
         }
         .quote-box {
             position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
             border-radius: 25px;
             padding: 50px;
             display: flex;
@@ -235,6 +238,7 @@
             align-items: center;
             justify-content: center;
             text-align: center;
+            box-sizing: border-box;
         }
         .quote-text {
             font-size: 42px;
@@ -576,10 +580,259 @@
             transform: scale(0.98);
             background: #5a6268;
         }
-        .history-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
+        /* Floating Bottom Action Bar */
+        .floating-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(26, 26, 26, 0.98) 0%, rgba(26, 26, 26, 0.95) 100%);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 12px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            border-top: 2px solid #d4af37;
         }
+
+        .floating-bar-nav {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .floating-btn {
+            padding: 12px 20px;
+            background: #d4af37;
+            color: #1a1a1a;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            min-width: 70px;
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.3);
+        }
+
+        .floating-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 1px 4px rgba(212, 175, 55, 0.4);
+        }
+
+        .floating-btn:disabled {
+            background: #666;
+            color: #999;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .floating-btn.primary {
+            background: linear-gradient(135deg, #d4af37 0%, #c9a12c 100%);
+            color: white;
+            flex: 1;
+            font-size: 1em;
+        }
+
+        .floating-btn.secondary {
+            background: #555;
+            color: white;
+        }
+
+        .floating-counter {
+            color: white;
+            font-weight: 600;
+            font-size: 0.85em;
+            padding: 0 8px;
+            white-space: nowrap;
+        }
+
+        .floating-menu-btn {
+            padding: 12px;
+            background: #555;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            line-height: 1;
+            transition: all 0.3s;
+        }
+
+        .floating-menu-btn:active {
+            transform: scale(0.95);
+            background: #666;
+        }
+
+        /* Add padding to main content so floating bar doesn't cover content */
+        .main-content {
+            padding-bottom: 80px;
+        }
+
+        /* Enhanced Slider Controls */
+        .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 6px;
+        }
+
+        .slider-btn {
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            background: #f0f0f0;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .slider-btn:active {
+            background: #d4af37;
+            color: white;
+            border-color: #d4af37;
+            transform: scale(0.95);
+        }
+
+        .slider-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .slider-value-input {
+            width: 70px;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .slider-value-input:focus {
+            outline: none;
+            border-color: #d4af37;
+        }
+
+        /* Quick Settings Bottom Sheet */
+        .quick-sheet {
+            position: fixed;
+            bottom: -100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            transition: bottom 0.3s ease;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .quick-sheet.open {
+            bottom: 60px;
+        }
+
+        .quick-sheet-header {
+            padding: 16px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 1;
+        }
+
+        .quick-sheet-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .quick-sheet-close {
+            font-size: 1.5em;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px 8px;
+            color: #666;
+        }
+
+        .quick-sheet-content {
+            padding: 16px;
+        }
+
+        .quick-preset-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .quick-preset-btn {
+            padding: 16px;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .quick-preset-btn:active {
+            transform: scale(0.95);
+            border-color: #d4af37;
+            background: linear-gradient(135deg, #d4af37 0%, #c9a12c 100%);
+            color: white;
+        }
+
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .quick-action-btn {
+            padding: 14px;
+            background: #555;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quick-action-btn:active {
+            transform: scale(0.95);
+            background: #333;
+        }
+
+        .quick-action-btn.danger {
+            background: #ff6b6b;
+        }
+
+        .quick-action-btn.success {
+            background: #4caf50;
+        }
+        
     </style>
 </head>
 <body>
@@ -634,7 +887,7 @@
                 <h2 class="section-title">👁️ Preview</h2>
                 <div class="canvas-wrapper">
                     <div class="canvas-container" id="canvasContainer">
-                        <div class="export-canvas" id="exportCanvas">
+                        <div class="export-canvas" id="exportCanvas" style="width: 1080px; height: 1080px;">
                             <img id="canvasBg" class="canvas-background" style="display: none;">
                             <div class="quote-box" id="quoteBox">
                                 <div class="quote-text" id="quoteText"></div>
@@ -644,7 +897,8 @@
                                 <p style="font-weight: 600; margin-bottom: 8px; font-size: 1.1em;">📸 Upload & Create</p>
                                 <p style="font-size: 0.9em;">Add background and quotes to start</p>
                             </div>
-                        </div>
+                            <div style="position: absolute; top: 8px; right: 8px; background: rgba(0,0,0,0.7); color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.75em; font-weight: 600; z-index: 5;" id="dimensionsDisplay"> 1080×1080
+                            </div>
                     </div>
                     <div class="preview-controls">
                         <button class="nav-btn" id="prevBtn" disabled>← Prev</button>
@@ -665,23 +919,47 @@
                     <span class="toggle-icon" id="bgControlsIcon">▼</span>
                 </div>
                 <div class="collapsible-content" id="bgControls">
-                    <div class="control-group">
-                        <label>Blur: <span id="bgBlurValue">0px</span></label>
-                        <input type="range" id="bgBlur" min="0" max="20" value="0">
-                    </div>
-                    <div class="control-group">
-                        <label>Brightness: <span id="bgBrightnessValue">100%</span></label>
-                        <input type="range" id="bgBrightness" min="50" max="150" value="100">
-                    </div>
-                    <div class="control-group">
-                        <label>Contrast: <span id="bgContrastValue">100%</span></label>
-                        <input type="range" id="bgContrast" min="50" max="150" value="100">
-                    </div>
-                    <div class="control-group">
-                        <label>Saturation: <span id="bgSaturationValue">100%</span></label>
-                        <input type="range" id="bgSaturation" min="0" max="200" value="100">
-                    </div>
-                </div>
+    <div class="control-group">
+        <label>Blur: <span id="bgBlurValue">0px</span></label>
+        <div class="slider-group">
+            <button class="slider-btn" onclick="adjustSlider('bgBlur', -1)">−</button>
+            <div class="slider-wrapper">
+                <input type="range" id="bgBlur" min="0" max="20" value="0">
+            </div>
+            <button class="slider-btn" onclick="adjustSlider('bgBlur', 1)">+</button>
+        </div>
+    </div>
+    <div class="control-group">
+        <label>Brightness: <span id="bgBrightnessValue">100%</span></label>
+        <div class="slider-group">
+            <button class="slider-btn" onclick="adjustSlider('bgBrightness', -1)">−</button>
+            <div class="slider-wrapper">
+                <input type="range" id="bgBrightness" min="50" max="150" value="100">
+            </div>
+            <button class="slider-btn" onclick="adjustSlider('bgBrightness', 1)">+</button>
+        </div>
+    </div>
+    <div class="control-group">
+        <label>Contrast: <span id="bgContrastValue">100%</span></label>
+        <div class="slider-group">
+            <button class="slider-btn" onclick="adjustSlider('bgContrast', -1)">−</button>
+            <div class="slider-wrapper">
+                <input type="range" id="bgContrast" min="50" max="150" value="100">
+            </div>
+            <button class="slider-btn" onclick="adjustSlider('bgContrast', 1)">+</button>
+        </div>
+    </div>
+    <div class="control-group">
+        <label>Saturation: <span id="bgSaturationValue">100%</span></label>
+        <div class="slider-group">
+            <button class="slider-btn" onclick="adjustSlider('bgSaturation', -1)">−</button>
+            <div class="slider-wrapper">
+                <input type="range" id="bgSaturation" min="0" max="200" value="100">
+            </div>
+            <button class="slider-btn" onclick="adjustSlider('bgSaturation', 1)">+</button>
+        </div>
+    </div>
+</div>
             </div>
 
             <div class="section">
@@ -690,98 +968,164 @@
                     <span class="toggle-icon" id="boxControlsIcon">▼</span>
                 </div>
                 <div class="collapsible-content" id="boxControls">
-                    <div class="control-group">
-                        <label>Width: <span id="boxWidthValue">70%</span></label>
-                        <input type="range" id="boxWidth" min="50" max="90" value="70">
-                    </div>
-                    <div class="control-group">
-                        <label>Height: <span id="boxHeightValue">35%</span></label>
-                        <input type="range" id="boxHeight" min="25" max="60" value="35">
-                    </div>
-                    <div class="control-group">
-                        <label>Padding: <span id="boxPaddingValue">50px</span></label>
-                        <input type="range" id="boxPadding" min="20" max="80" value="50" step="2">
-                    </div>
-                    
-                    <div class="control-group">
-                        <label>Background Color</label>
-                        <input type="color" id="boxBgColor" value="#ffffff">
-                    </div>
-                    
-                    <div class="control-group">
-                        <label>Opacity: <span id="boxOpacityValue">95%</span></label>
-                        <input type="range" id="boxOpacity" min="0" max="100" value="95" step="5">
-                    </div>
-                    
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="useGradient">
-                        <label for="useGradient">Use Gradient Background</label>
-                    </div>
-                    
-                    <div id="gradientControls" style="display: none;">
-                        <div class="control-group">
-                            <label>Gradient Color</label>
-                            <input type="color" id="boxGradientColor" value="#f0f0f0">
-                        </div>
-                        <div class="control-group">
-                            <label>Gradient Angle: <span id="gradientAngleValue">135°</span></label>
-                            <input type="range" id="gradientAngle" min="0" max="360" value="135" step="15">
-                        </div>
-                    </div>
-                    
-                    <div class="control-group">
-                        <label>Border Color</label>
-                        <input type="color" id="borderColor" value="#8B0000">
-                    </div>
-                    
-                    <div class="control-group">
-                        <label>Border Width: <span id="borderWidthValue">3px</span></label>
-                        <input type="range" id="borderWidth" min="0" max="10" value="3" step="1">
-                    </div>
-                    
-                    <div class="control-group">
-                        <label>Corner Radius: <span id="cornerRadiusValue">25px</span></label>
-                        <input type="range" id="cornerRadius" min="0" max="50" value="25" step="5">
-                    </div>
-                    
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="enableTextShadow">
-                        <label for="enableTextShadow">Enable Text Shadow</label>
-                    </div>
-                    <div id="shadowControls" style="display: none;">
-                        <div class="control-group">
-                            <label>Shadow Color</label>
-                            <input type="color" id="textShadowColor" value="#000000">
-                        </div>
-                        <div class="control-group">
-                            <label>Shadow Blur: <span id="shadowBlurValue">4px</span></label>
-                            <input type="range" id="shadowBlur" min="0" max="20" value="4">
-                        </div>
-                        <div class="control-group">
-                            <label>Shadow X: <span id="shadowXValue">2px</span></label>
-                            <input type="range" id="shadowX" min="-10" max="10" value="2">
-                        </div>
-                        <div class="control-group">
-                            <label>Shadow Y: <span id="shadowYValue">2px</span></label>
-                            <input type="range" id="shadowY" min="-10" max="10" value="2">
-                        </div>
-                    </div>
-                    
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="enableTextStroke">
-                        <label for="enableTextStroke">Enable Text Outline</label>
-                    </div>
-                    <div id="strokeControls" style="display: none;">
-                        <div class="control-group">
-                            <label>Outline Color</label>
-                            <input type="color" id="textStrokeColor" value="#ffffff">
-                        </div>
-                        <div class="control-group">
-                            <label>Outline Width: <span id="strokeWidthValue">2px</span></label>
-                            <input type="range" id="strokeWidth" min="1" max="5" value="2">
-                        </div>
-                    </div>
+    <div class="control-group">
+        <label>Width: <span id="boxWidthValue">70%</span></label>
+        <div class="slider-group">
+            <button class="slider-btn" onclick="adjustSlider('boxWidth', -1)">−</button>
+            <div class="slider-wrapper">
+                <input type="range" id="boxWidth" min="50" max="90" value="70">
+            </div>
+            <button class="slider-btn" onclick="adjustSlider('boxWidth', 1)">+</button>
+        </div>
+    </div>
+    <div class="control-group">
+        <label>Height: <span id="boxHeightValue">35%</span></label>
+        <div class="slider-group">
+            <button class="slider-btn" onclick="adjustSlider('boxHeight', -1)">−</button>
+            <div class="slider-wrapper">
+                <input type="range" id="boxHeight" min="25" max="60" value="35">
+            </div>
+            <button class="slider-btn" onclick="adjustSlider('boxHeight', 1)">+</button>
+        </div>
+    </div>
+    <div class="control-group">
+        <label>Padding: <span id="boxPaddingValue">50px</span></label>
+        <div class="slider-group">
+            <button class="slider-btn" onclick="adjustSlider('boxPadding', -2)">−</button>
+            <div class="slider-wrapper">
+                <input type="range" id="boxPadding" min="20" max="80" value="50" step="2">
+            </div>
+            <button class="slider-btn" onclick="adjustSlider('boxPadding', 2)">+</button>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label>Background Color</label>
+        <input type="color" id="boxBgColor" value="#ffffff">
+    </div>
+    
+    <div class="control-group">
+        <label>Opacity: <span id="boxOpacityValue">95%</span></label>
+        <div class="slider-group">
+            <button class="slider-btn" onclick="adjustSlider('boxOpacity', -5)">−</button>
+            <div class="slider-wrapper">
+                <input type="range" id="boxOpacity" min="0" max="100" value="95" step="5">
+            </div>
+            <button class="slider-btn" onclick="adjustSlider('boxOpacity', 5)">+</button>
+        </div>
+    </div>
+    
+    <div class="checkbox-wrapper">
+        <input type="checkbox" id="useGradient">
+        <label for="useGradient">Use Gradient Background</label>
+    </div>
+    
+    <div id="gradientControls" style="display: none;">
+        <div class="control-group">
+            <label>Gradient Color</label>
+            <input type="color" id="boxGradientColor" value="#f0f0f0">
+        </div>
+        <div class="control-group">
+            <label>Gradient Angle: <span id="gradientAngleValue">135°</span></label>
+            <div class="slider-group">
+                <button class="slider-btn" onclick="adjustSlider('gradientAngle', -15)">−</button>
+                <div class="slider-wrapper">
+                    <input type="range" id="gradientAngle" min="0" max="360" value="135" step="15">
                 </div>
+                <button class="slider-btn" onclick="adjustSlider('gradientAngle', 15)">+</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label>Border Color</label>
+        <input type="color" id="borderColor" value="#8B0000">
+    </div>
+    
+    <div class="control-group">
+        <label>Border Width: <span id="borderWidthValue">3px</span></label>
+        <div class="slider-group">
+            <button class="slider-btn" onclick="adjustSlider('borderWidth', -1)">−</button>
+            <div class="slider-wrapper">
+                <input type="range" id="borderWidth" min="0" max="10" value="3" step="1">
+            </div>
+            <button class="slider-btn" onclick="adjustSlider('borderWidth', 1)">+</button>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label>Corner Radius: <span id="cornerRadiusValue">25px</span></label>
+        <div class="slider-group">
+            <button class="slider-btn" onclick="adjustSlider('cornerRadius', -5)">−</button>
+            <div class="slider-wrapper">
+                <input type="range" id="cornerRadius" min="0" max="50" value="25" step="5">
+            </div>
+            <button class="slider-btn" onclick="adjustSlider('cornerRadius', 5)">+</button>
+        </div>
+    </div>
+    
+    <div class="checkbox-wrapper">
+        <input type="checkbox" id="enableTextShadow">
+        <label for="enableTextShadow">Enable Text Shadow</label>
+    </div>
+    <div id="shadowControls" style="display: none;">
+        <div class="control-group">
+            <label>Shadow Color</label>
+            <input type="color" id="textShadowColor" value="#000000">
+        </div>
+        <div class="control-group">
+            <label>Shadow Blur: <span id="shadowBlurValue">4px</span></label>
+            <div class="slider-group">
+                <button class="slider-btn" onclick="adjustSlider('shadowBlur', -1)">−</button>
+                <div class="slider-wrapper">
+                    <input type="range" id="shadowBlur" min="0" max="20" value="4">
+                </div>
+                <button class="slider-btn" onclick="adjustSlider('shadowBlur', 1)">+</button>
+            </div>
+        </div>
+        <div class="control-group">
+            <label>Shadow X: <span id="shadowXValue">2px</span></label>
+            <div class="slider-group">
+                <button class="slider-btn" onclick="adjustSlider('shadowX', -1)">−</button>
+                <div class="slider-wrapper">
+                    <input type="range" id="shadowX" min="-10" max="10" value="2">
+                </div>
+                <button class="slider-btn" onclick="adjustSlider('shadowX', 1)">+</button>
+            </div>
+        </div>
+        <div class="control-group">
+            <label>Shadow Y: <span id="shadowYValue">2px</span></label>
+            <div class="slider-group">
+                <button class="slider-btn" onclick="adjustSlider('shadowY', -1)">−</button>
+                <div class="slider-wrapper">
+                    <input type="range" id="shadowY" min="-10" max="10" value="2">
+                </div>
+                <button class="slider-btn" onclick="adjustSlider('shadowY', 1)">+</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="checkbox-wrapper">
+        <input type="checkbox" id="enableTextStroke">
+        <label for="enableTextStroke">Enable Text Outline</label>
+    </div>
+    <div id="strokeControls" style="display: none;">
+        <div class="control-group">
+            <label>Outline Color</label>
+            <input type="color" id="textStrokeColor" value="#ffffff">
+        </div>
+        <div class="control-group">
+            <label>Outline Width: <span id="strokeWidthValue">2px</span></label>
+            <div class="slider-group">
+                <button class="slider-btn" onclick="adjustSlider('strokeWidth', -1)">−</button>
+                <div class="slider-wrapper">
+                    <input type="range" id="strokeWidth" min="1" max="5" value="2">
+                </div>
+                <button class="slider-btn" onclick="adjustSlider('strokeWidth', 1)">+</button>
+            </div>
+        </div>
+    </div>
+</div>
             </div>
 
             <div class="section">
@@ -790,46 +1134,58 @@
                     <span class="toggle-icon" id="attrControlsIcon">▼</span>
                 </div>
                 <div class="collapsible-content" id="attrControls">
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="showAttribution" checked>
-                        <label for="showAttribution">Show Attribution</label>
-                    </div>
-                    <div class="control-group">
-                        <label>Font</label>
-                        <select id="attrFontFamily">
-                            <option value="Arial, sans-serif">Arial</option>
-                            <option value="'Times New Roman', serif">Times New Roman</option>
-                            <option value="Georgia, serif">Georgia</option>
-                            <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
-                            <option value="Verdana, sans-serif">Verdana</option>
-                        </select>
-                    </div>
-                    <div class="control-group">
-                        <label>Size: <span id="attrFontSizeValue">28px</span></label>
-                        <input type="range" id="attrFontSize" min="18" max="48" value="28" step="2">
-                    </div>
-                    <div class="control-group">
-                        <label>Color</label>
-                        <input type="color" id="attrFontColor" value="#555555">
-                    </div>
-                    <div class="control-group">
-                        <label>Weight: <span id="attrFontWeightValue">400</span></label>
-                        <input type="range" id="attrFontWeight" min="300" max="900" step="100" value="400">
-                    </div>
-                    <div class="checkbox-wrapper">
-                        <input type="checkbox" id="attrItalic" checked>
-                        <label for="attrItalic">Italic Style</label>
-                    </div>
-                    <div class="control-group">
-                        <label>Prefix</label>
-                        <select id="attrPrefix">
-                            <option value="—">— (em dash)</option>
-                            <option value="-">- (dash)</option>
-                            <option value="~">~ (tilde)</option>
-                            <option value="">None</option>
-                        </select>
-                    </div>
-                </div>
+    <div class="checkbox-wrapper">
+        <input type="checkbox" id="showAttribution" checked>
+        <label for="showAttribution">Show Attribution</label>
+    </div>
+    <div class="control-group">
+        <label>Font</label>
+        <select id="attrFontFamily">
+            <option value="Arial, sans-serif">Arial</option>
+            <option value="'Times New Roman', serif">Times New Roman</option>
+            <option value="Georgia, serif">Georgia</option>
+            <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+            <option value="Verdana, sans-serif">Verdana</option>
+        </select>
+    </div>
+    <div class="control-group">
+        <label>Size: <span id="attrFontSizeValue">28px</span></label>
+        <div class="slider-group">
+            <button class="slider-btn" onclick="adjustSlider('attrFontSize', -2)">−</button>
+            <div class="slider-wrapper">
+                <input type="range" id="attrFontSize" min="18" max="48" value="28" step="2">
+            </div>
+            <button class="slider-btn" onclick="adjustSlider('attrFontSize', 2)">+</button>
+        </div>
+    </div>
+    <div class="control-group">
+        <label>Color</label>
+        <input type="color" id="attrFontColor" value="#555555">
+    </div>
+    <div class="control-group">
+        <label>Weight: <span id="attrFontWeightValue">400</span></label>
+        <div class="slider-group">
+            <button class="slider-btn" onclick="adjustSlider('attrFontWeight', -100)">−</button>
+            <div class="slider-wrapper">
+                <input type="range" id="attrFontWeight" min="300" max="900" step="100" value="400">
+            </div>
+            <button class="slider-btn" onclick="adjustSlider('attrFontWeight', 100)">+</button>
+        </div>
+    </div>
+    <div class="checkbox-wrapper">
+        <input type="checkbox" id="attrItalic" checked>
+        <label for="attrItalic">Italic Style</label>
+    </div>
+    <div class="control-group">
+        <label>Prefix</label>
+        <select id="attrPrefix">
+            <option value="—">— (em dash)</option>
+            <option value="-">- (dash)</option>
+            <option value="~">~ (tilde)</option>
+            <option value="">None</option>
+        </select>
+    </div>
+</div>
             </div>
 
             <div class="section">
@@ -838,53 +1194,77 @@
                     <span class="toggle-icon" id="textControlsIcon">▼</span>
                 </div>
                 <div class="collapsible-content" id="textControls">
-                    <div class="control-group">
-                        <label>Font Family</label>
-                        <select id="fontFamily">
-                            <option value="Arial, sans-serif">Arial</option>
-                            <option value="'Times New Roman', serif">Times New Roman</option>
-                            <option value="Georgia, serif">Georgia</option>
-                            <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
-                            <option value="Verdana, sans-serif">Verdana</option>
-                            <option value="'Courier New', monospace">Courier New</option>
-                            <option value="'Comic Sans MS', cursive">Comic Sans MS</option>
-                        </select>
-                    </div>
-                    
-                    <div class="control-group">
-                        <label>Font Size: <span id="fontSizeValue">42px</span></label>
-                        <input type="range" id="fontSize" min="24" max="72" value="42" step="2">
-                    </div>
-                    
-                    <div class="control-group">
-                        <label>Text Color</label>
-                        <input type="color" id="fontColor" value="#1a1a1a">
-                    </div>
-                    
-                    <div class="control-group">
-                        <label>Font Weight: <span id="fontWeightValue">600</span></label>
-                        <input type="range" id="fontWeight" min="300" max="900" value="600" step="100">
-                    </div>
-                    
-                    <div class="control-group">
-                        <label>Line Height: <span id="lineHeightValue">1.6</span></label>
-                        <input type="range" id="lineHeight" min="1" max="2.5" value="1.6" step="0.1">
-                    </div>
-                    
-                    <div class="control-group">
-                        <label>Letter Spacing: <span id="letterSpacingValue">0px</span></label>
-                        <input type="range" id="letterSpacing" min="-3" max="10" value="0" step="1">
-                    </div>
-                    
-                    <div class="control-group">
-                        <label>Text Alignment</label>
-                        <div class="align-buttons">
-                            <button class="align-btn" data-align="left">← Left</button>
-                            <button class="align-btn active" data-align="center">Center</button>
-                            <button class="align-btn" data-align="right">Right →</button>
-                        </div>
-                    </div>
-                </div>
+    <div class="control-group">
+        <label>Font Family</label>
+        <select id="fontFamily">
+            <option value="Arial, sans-serif">Arial</option>
+            <option value="'Times New Roman', serif">Times New Roman</option>
+            <option value="Georgia, serif">Georgia</option>
+            <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+            <option value="Verdana, sans-serif">Verdana</option>
+            <option value="'Courier New', monospace">Courier New</option>
+            <option value="'Comic Sans MS', cursive">Comic Sans MS</option>
+        </select>
+    </div>
+    
+    <div class="control-group">
+        <label>Font Size: <span id="fontSizeValue">42px</span></label>
+        <div class="slider-group">
+            <button class="slider-btn" onclick="adjustSlider('fontSize', -2)">−</button>
+            <div class="slider-wrapper">
+                <input type="range" id="fontSize" min="24" max="72" value="42" step="2">
+            </div>
+            <button class="slider-btn" onclick="adjustSlider('fontSize', 2)">+</button>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label>Text Color</label>
+        <input type="color" id="fontColor" value="#1a1a1a">
+    </div>
+    
+    <div class="control-group">
+        <label>Font Weight: <span id="fontWeightValue">600</span></label>
+        <div class="slider-group">
+            <button class="slider-btn" onclick="adjustSlider('fontWeight', -100)">−</button>
+            <div class="slider-wrapper">
+                <input type="range" id="fontWeight" min="300" max="900" value="600" step="100">
+            </div>
+            <button class="slider-btn" onclick="adjustSlider('fontWeight', 100)">+</button>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label>Line Height: <span id="lineHeightValue">1.6</span></label>
+        <div class="slider-group">
+            <button class="slider-btn" onclick="adjustSlider('lineHeight', -0.1)">−</button>
+            <div class="slider-wrapper">
+                <input type="range" id="lineHeight" min="1" max="2.5" value="1.6" step="0.1">
+            </div>
+            <button class="slider-btn" onclick="adjustSlider('lineHeight', 0.1)">+</button>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label>Letter Spacing: <span id="letterSpacingValue">0px</span></label>
+        <div class="slider-group">
+            <button class="slider-btn" onclick="adjustSlider('letterSpacing', -1)">−</button>
+            <div class="slider-wrapper">
+                <input type="range" id="letterSpacing" min="-3" max="10" value="0" step="1">
+            </div>
+            <button class="slider-btn" onclick="adjustSlider('letterSpacing', 1)">+</button>
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label>Text Alignment</label>
+        <div class="align-buttons">
+            <button class="align-btn" data-align="left">← Left</button>
+            <button class="align-btn active" data-align="center">Center</button>
+            <button class="align-btn" data-align="right">Right →</button>
+        </div>
+    </div>
+</div>
             </div>
 
             <div class="section">
@@ -907,28 +1287,70 @@
             </div>
 
             <div class="section">
-                <h2 class="section-title">📦 Export</h2>
-                <div class="export-options">
-                    <div class="option-group">
-                        <label>Format</label>
-                        <select id="exportFormat">
-                            <option value="png">PNG</option>
-                            <option value="jpeg">JPEG</option>
-                        </select>
-                    </div>
-                    <div class="option-group">
-                        <label>Size</label>
-                        <select id="exportSize">
-                            <option value="1080">1080x1080</option>
-                            <option value="1200">1200x1200</option>
-                            <option value="800">800x800</option>
-                        </select>
-                    </div>
-                </div>
+        <h2 class="section-title">📦 Export</h2>
+        <div class="export-options">
+            <div class="option-group">
+                <label>Format</label>
+                <select id="exportFormat">
+                    <option value="png">PNG</option>
+                    <option value="jpeg">JPEG</option>
+                </select>
+            </div>
+            <div class="option-group">
+                <label>Size</label>
+                <select id="exportSize">
+                    <option value="original">Original Size</option>
+                    <option value="1920">HD (1920px)</option>
+                    <option value="1080">Full HD (1080px)</option>
+                    <option value="800">Medium (800px)</option>
+                </select>
+            </div>
+        </div>
                 <button class="export-btn" id="exportBtn" disabled>📦 Generate & Download</button>
                 <div class="status-message" id="statusMessage"></div>
             </div>
         </div>
+
+        <!-- Floating Bottom Action Bar -->
+        <div class="floating-bar" id="floatingBar">
+            <button class="floating-menu-btn" id="floatingMenuBtn" title="Quick Settings">⚙️</button>
+            <div class="floating-bar-nav">
+                <button class="floating-btn" id="floatingPrevBtn" disabled>←</button>
+                <div class="floating-counter" id="floatingCounter">0/0</div>
+                <button class="floating-btn" id="floatingNextBtn" disabled>→</button>
+            </div>
+            <button class="floating-btn primary" id="floatingExportBtn" disabled>📦 Export</button>
+        </div>
+
+        <!-- Quick Settings Sheet -->
+        <div class="quick-sheet" id="quickSheet">
+            <div class="quick-sheet-header">
+                <div class="quick-sheet-title">⚡ Quick Settings</div>
+                <button class="quick-sheet-close" id="closeQuickSheet">✕</button>
+            </div>
+            <div class="quick-sheet-content">
+                <h3 style="font-size: 0.9em; color: #666; margin-bottom: 10px; font-weight: 600;">PRESET STYLES</h3>
+                <div class="quick-preset-grid">
+                    <button class="quick-preset-btn" onclick="applyQuickPreset('elegant')">🎨 Elegant</button>
+                    <button class="quick-preset-btn" onclick="applyQuickPreset('bold')">💪 Bold</button>
+                    <button class="quick-preset-btn" onclick="applyQuickPreset('minimal')">⚪ Minimal</button>
+                    <button class="quick-preset-btn" onclick="applyQuickPreset('vibrant')">🌈 Vibrant</button>
+                </div>
+                
+                <h3 style="font-size: 0.9em; color: #666; margin: 16px 0 10px; font-weight: 600;">QUICK ACTIONS</h3>
+                <div class="quick-actions-grid">
+                    <button class="quick-action-btn" onclick="toggleSection('textControls'); closeQuickSheet();">✏️ Text Style</button>
+                    <button class="quick-action-btn" onclick="toggleSection('boxControls'); closeQuickSheet();">🎨 Box Style</button>
+                    <button class="quick-action-btn" onclick="$('quotesInput').focus(); closeQuickSheet();">📝 Edit Quotes</button>
+                    <button class="quick-action-btn success" onclick="$('exportBtn').click(); closeQuickSheet();">📦 Export All</button>
+                </div>
+                
+                <button class="quick-action-btn danger" onclick="if(confirm('Reset all settings?')) { $('resetBtn').click(); closeQuickSheet(); }" style="width: 100%; margin-top: 10px;">
+                    🔄 Reset Everything
+                </button>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -1004,7 +1426,15 @@
 
         let backgroundImage = null, quotes = [], currentQuoteIndex = 0, attribution = '';
         let history = [], historyIndex = -1;
+        let canvasDimensions = { width: 1080, height: 1080 }; // Track actual canvas dimensions
         
+        // Debounce helper for performance
+        let debounceTimer;
+        function debounceUpdate(callback, delay = 300) {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(callback, delay);
+        }
+
         const defaultSettings = {
             boxWidth: 70, boxHeight: 35, boxPadding: 50, boxBgColor: '#ffffff', boxOpacity: 95,
             useGradient: false, boxGradientColor: '#f0f0f0', gradientAngle: 135,
@@ -1064,11 +1494,45 @@
             }
         };
 
+        // Slider adjustment helper
+        function adjustSlider(id, direction) {
+            const slider = $(id);
+            const step = parseFloat(slider.step) || 1;
+            const newValue = parseFloat(slider.value) + (direction * step);
+            const min = parseFloat(slider.min);
+            const max = parseFloat(slider.max);
+            
+            if (newValue >= min && newValue <= max) {
+                slider.value = newValue;
+                slider.dispatchEvent(new Event('input'));
+            }
+        }
+
+        // Touch/Swipe Handler for Canvas
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchEndX - touchStartX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0 && currentQuoteIndex > 0) {
+                    // Swipe right - previous quote
+                    $('prevBtn').click();
+                } else if (diff < 0 && currentQuoteIndex < quotes.length - 1) {
+                    // Swipe left - next quote
+                    $('nextBtn').click();
+                }
+            }
+        }
+
         function scaleCanvas() {
             const w = $('canvasContainer').offsetWidth;
-            const scale = w / 1080;
+            const scale = w / canvasDimensions.width;
             $('exportCanvas').style.transform = `scale(${scale})`;
-            $('canvasContainer').style.height = (1080 * scale) + 'px';
+            const scaledHeight = canvasDimensions.height * scale;
+            $('canvasContainer').style.height = scaledHeight + 'px';
         }
 
         let resizeTimeout;
@@ -1090,28 +1554,46 @@
         let backgroundImageUrl = null;
         
         $('bgInput').onchange = e => {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    // Clean up previous URL if exists
-                    if (backgroundImageUrl) {
-                        URL.revokeObjectURL(backgroundImageUrl);
-                    }
-                    
-                    backgroundImage = e.target.result;
-                    $('uploadPreview').src = backgroundImage;
-                    $('uploadPreview').classList.add('visible');
-                    $('uploadContent').style.display = 'none';
-                    $('uploadBox').classList.add('has-image');
-                    $('canvasBg').src = backgroundImage;
-                    $('canvasBg').style.display = 'block';
-                    updatePreview();
-                    updateExportButton();
-                };
-                reader.readAsDataURL(file);
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            // Clean up previous URL if exists
+            if (backgroundImageUrl) {
+                URL.revokeObjectURL(backgroundImageUrl);
             }
+            
+            backgroundImage = e.target.result;
+            
+            // Detect image dimensions
+            const img = new Image();
+            img.onload = () => {
+                canvasDimensions.width = img.width;
+                canvasDimensions.height = img.height;
+                
+                // Update canvas size
+                $('exportCanvas').style.width = canvasDimensions.width + 'px';
+                $('exportCanvas').style.height = canvasDimensions.height + 'px';
+                // Update dimensions display
+                $('dimensionsDisplay').textContent = `${canvasDimensions.width}×${canvasDimensions.height}`;
+                $('uploadPreview').src = backgroundImage;
+                $('uploadPreview').classList.add('visible');
+                $('uploadContent').style.display = 'none';
+                $('uploadBox').classList.add('has-image');
+                $('canvasBg').src = backgroundImage;
+                $('canvasBg').style.display = 'block';
+                
+                scaleCanvas();
+                updatePreview();
+                updateExportButton();
+                
+                showStatus(`✅ Image loaded: ${canvasDimensions.width}x${canvasDimensions.height}px`, 'success');
+            };
+            img.src = backgroundImage;
         };
+        reader.readAsDataURL(file);
+    }
+};
 
         $('quotesInput').oninput = () => {
             quotes = $('quotesInput').value.trim().split('\n').filter(q => q.trim());
@@ -1262,57 +1744,74 @@
         $('bgBlur').oninput = e => {
             settings.bgBlur = e.target.value;
             $('bgBlurValue').textContent = e.target.value + 'px';
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('bgBrightness').oninput = e => {
             settings.bgBrightness = e.target.value;
             $('bgBrightnessValue').textContent = e.target.value + '%';
-            updatePreview();
-            autoSaveSettings();
+           debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('bgContrast').oninput = e => {
             settings.bgContrast = e.target.value;
             $('bgContrastValue').textContent = e.target.value + '%';
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('bgSaturation').oninput = e => {
             settings.bgSaturation = e.target.value;
             $('bgSaturationValue').textContent = e.target.value + '%';
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
-
         // Box Controls
         $('boxWidth').oninput = e => {
             settings.boxWidth = e.target.value;
             $('boxWidthValue').textContent = e.target.value + '%';
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('boxHeight').oninput = e => {
             settings.boxHeight = e.target.value;
             $('boxHeightValue').textContent = e.target.value + '%';
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('boxPadding').oninput = e => {
             settings.boxPadding = e.target.value;
             $('boxPaddingValue').textContent = e.target.value + 'px';
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('boxBgColor').oninput = e => {
             settings.boxBgColor = e.target.value;
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('boxOpacity').oninput = e => {
             settings.boxOpacity = e.target.value;
             $('boxOpacityValue').textContent = e.target.value + '%';
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('useGradient').onchange = e => {
             settings.useGradient = e.target.checked;
@@ -1322,33 +1821,42 @@
         };
         $('boxGradientColor').oninput = e => {
             settings.boxGradientColor = e.target.value;
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('gradientAngle').oninput = e => {
             settings.gradientAngle = e.target.value;
             $('gradientAngleValue').textContent = e.target.value + '°';
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('borderColor').oninput = e => {
             settings.borderColor = e.target.value;
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('borderWidth').oninput = e => {
             settings.borderWidth = e.target.value;
             $('borderWidthValue').textContent = e.target.value + 'px';
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('cornerRadius').oninput = e => {
             settings.cornerRadius = e.target.value;
             $('cornerRadiusValue').textContent = e.target.value + 'px';
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
-
         // Text Controls
         $('fontFamily').onchange = e => {
             settings.fontFamily = e.target.value;
@@ -1358,31 +1866,41 @@
         $('fontSize').oninput = e => {
             settings.fontSize = e.target.value;
             $('fontSizeValue').textContent = e.target.value + 'px';
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('fontColor').oninput = e => {
             settings.fontColor = e.target.value;
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('fontWeight').oninput = e => {
             settings.fontWeight = e.target.value;
             $('fontWeightValue').textContent = e.target.value;
-            updatePreview();
-            autoSaveSettings();
+           debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('lineHeight').oninput = e => {
             settings.lineHeight = e.target.value;
             $('lineHeightValue').textContent = e.target.value;
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('letterSpacing').oninput = e => {
             settings.letterSpacing = e.target.value;
             $('letterSpacingValue').textContent = e.target.value + 'px';
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         document.querySelectorAll('.align-btn').forEach(btn => {
             btn.onclick = e => {
@@ -1403,26 +1921,34 @@
         };
         $('textShadowColor').oninput = e => {
             settings.textShadowColor = e.target.value;
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('shadowBlur').oninput = e => {
             settings.shadowBlur = e.target.value;
             $('shadowBlurValue').textContent = e.target.value + 'px';
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('shadowX').oninput = e => {
             settings.shadowX = e.target.value;
             $('shadowXValue').textContent = e.target.value + 'px';
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('shadowY').oninput = e => {
             settings.shadowY = e.target.value;
             $('shadowYValue').textContent = e.target.value + 'px';
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('enableTextStroke').onchange = e => {
             settings.enableTextStroke = e.target.checked;
@@ -1432,14 +1958,18 @@
         };
         $('textStrokeColor').oninput = e => {
             settings.textStrokeColor = e.target.value;
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('strokeWidth').oninput = e => {
             settings.strokeWidth = e.target.value;
             $('strokeWidthValue').textContent = e.target.value + 'px';
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
 
         // Attribution Controls
@@ -1456,19 +1986,25 @@
         $('attrFontSize').oninput = e => {
             settings.attrFontSize = e.target.value;
             $('attrFontSizeValue').textContent = e.target.value + 'px';
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+                updatePreview();
+                autoSaveSettings();
+            }, 150);
         };
         $('attrFontColor').oninput = e => {
             settings.attrFontColor = e.target.value;
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+        updatePreview();
+        autoSaveSettings();
+    }, 150);
         };
         $('attrFontWeight').oninput = e => {
             settings.attrFontWeight = e.target.value;
             $('attrFontWeightValue').textContent = e.target.value;
-            updatePreview();
-            autoSaveSettings();
+            debounceUpdate(() => {
+        updatePreview();
+        autoSaveSettings();
+    }, 150);
         };
         $('attrItalic').onchange = e => {
             settings.attrItalic = e.target.checked;
@@ -1558,6 +2094,77 @@
             }
         };
 
+        // Floating Bar Navigation
+        $('floatingPrevBtn').onclick = () => {
+            if (currentQuoteIndex > 0) {
+                $('floatingPrevBtn').disabled = true;
+                $('floatingNextBtn').disabled = true;
+                $('prevBtn').disabled = true;
+                $('nextBtn').disabled = true;
+                currentQuoteIndex--;
+                updateNavigation();
+                updatePreview();
+                setTimeout(() => {
+                    updateNavigation();
+                }, 100);
+            }
+        };
+
+        $('floatingNextBtn').onclick = () => {
+            if (currentQuoteIndex < quotes.length - 1) {
+                $('floatingPrevBtn').disabled = true;
+                $('floatingNextBtn').disabled = true;
+                $('prevBtn').disabled = true;
+                $('nextBtn').disabled = true;
+                currentQuoteIndex++;
+                updateNavigation();
+                updatePreview();
+                setTimeout(() => {
+                    updateNavigation();
+                }, 100);
+            }
+        };
+
+        $('floatingExportBtn').onclick = () => {
+            $('exportBtn').click();
+            // Scroll to status message
+            setTimeout(() => {
+                $('statusMessage').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+        };
+
+       $('floatingMenuBtn').onclick = () => {
+            $('quickSheet').classList.toggle('open');
+        };
+
+        $('closeQuickSheet').onclick = () => {
+            $('quickSheet').classList.remove('open');
+        };
+
+        // Close sheet when clicking outside
+        document.addEventListener('click', (e) => {
+            const sheet = $('quickSheet');
+            const menuBtn = $('floatingMenuBtn');
+            if (sheet.classList.contains('open') && 
+                !sheet.contains(e.target) && 
+                e.target !== menuBtn) {
+                sheet.classList.remove('open');
+            }
+        });
+
+        function closeQuickSheet() {
+            $('quickSheet').classList.remove('open');
+        }
+
+        function applyQuickPreset(presetName) {
+            Object.assign(settings, presets[presetName]);
+            applySettings();
+            updatePreview();
+            saveToHistory();
+            showStatus(`✅ Applied ${presetName} preset!`, 'success');
+            closeQuickSheet();
+        }
+
         // Navigation
         $('prevBtn').onclick = () => {
             if (currentQuoteIndex > 0) {
@@ -1586,16 +2193,24 @@
         };
 
         function updateNavigation() {
-            if (quotes.length === 0) {
-                $('quoteCounter').textContent = 'No quotes';
-                $('prevBtn').disabled = true;
-                $('nextBtn').disabled = true;
-            } else {
-                $('quoteCounter').textContent = `${currentQuoteIndex + 1}/${quotes.length}`;
-                $('prevBtn').disabled = currentQuoteIndex === 0;
-                $('nextBtn').disabled = currentQuoteIndex === quotes.length - 1;
-            }
-        }
+    if (quotes.length === 0) {
+        $('quoteCounter').textContent = 'No quotes';
+        $('prevBtn').disabled = true;
+        $('nextBtn').disabled = true;
+        // Update floating bar
+        $('floatingCounter').textContent = '0/0';
+        $('floatingPrevBtn').disabled = true;
+        $('floatingNextBtn').disabled = true;
+    } else {
+        $('quoteCounter').textContent = `${currentQuoteIndex + 1}/${quotes.length}`;
+        $('prevBtn').disabled = currentQuoteIndex === 0;
+        $('nextBtn').disabled = currentQuoteIndex === quotes.length - 1;
+        // Update floating bar
+        $('floatingCounter').textContent = `${currentQuoteIndex + 1}/${quotes.length}`;
+        $('floatingPrevBtn').disabled = currentQuoteIndex === 0;
+        $('floatingNextBtn').disabled = currentQuoteIndex === quotes.length - 1;
+    }
+}
 
         function hexToRgb(hex) {
             const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -1683,24 +2298,45 @@
         }
 
         function updateExportButton() {
-            $('exportBtn').disabled = !backgroundImage || quotes.length === 0;
+            const canExport = backgroundImage && quotes.length > 0;
+            $('exportBtn').disabled = !canExport;
+            $('floatingExportBtn').disabled = !canExport;
         }
 
         $('exportBtn').onclick = async () => {
-            if (!backgroundImage || quotes.length === 0) return;
+    if (!backgroundImage || quotes.length === 0) return;
 
-            const btn = $('exportBtn');
-            
-            btn.disabled = true;
-            btn.textContent = '⏳ Generating...';
-            btn.classList.add('loading');
-            showStatus('Generating quote images...', 'info');
+    const btn = $('exportBtn');
+    
+    btn.disabled = true;
+    btn.textContent = '⏳ Generating...';
+    btn.classList.add('loading');
+    showStatus('Generating quote images...', 'info');
 
-            try {
-                const zip = new JSZip();
-                const format = $('exportFormat').value;
-                const size = parseInt($('exportSize').value);
-                const scale = size / 1080;
+    try {
+        const zip = new JSZip();
+        const format = $('exportFormat').value;
+        const sizeOption = $('exportSize').value;
+        
+        // Calculate export dimensions based on original aspect ratio
+        let exportWidth, exportHeight;
+        if (sizeOption === 'original') {
+            exportWidth = canvasDimensions.width;
+            exportHeight = canvasDimensions.height;
+        } else {
+            const size = parseInt(sizeOption);
+            const aspectRatio = canvasDimensions.width / canvasDimensions.height;
+            if (aspectRatio >= 1) {
+                // Landscape or square
+                exportWidth = size;
+                exportHeight = Math.round(size / aspectRatio);
+            } else {
+                // Portrait
+                exportHeight = size;
+                exportWidth = Math.round(size * aspectRatio);
+            }
+        }
+        const scale = exportWidth / canvasDimensions.width;
                 
     for (let i = 0; i < quotes.length; i++) {
                     currentQuoteIndex = i;
@@ -1718,8 +2354,8 @@
                         backgroundColor: null,
                         scale: scale * 2,
                         logging: false,
-                        width: 1080,
-                        height: 1080,
+                        width: canvasDimensions.width,
+                        height: canvasDimensions.height,
                         useCORS: true,
                         allowTaint: true,
                         letterRendering: true,
@@ -1804,6 +2440,38 @@
         applySettings();
         saveToHistory();
 
+        // Swipe gestures on canvas
+        const canvas = $('canvasContainer');
+        canvas.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        canvas.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        // Canvas click tip
+        $('exportCanvas').addEventListener('click', () => {
+            if (quotes.length > 0 && backgroundImage) {
+                showStatus('💡 Tip: Use arrow buttons or swipe to navigate quotes', 'info');
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' && currentQuoteIndex > 0) {
+                e.preventDefault();
+                $('prevBtn').click();
+            } else if (e.key === 'ArrowRight' && currentQuoteIndex < quotes.length - 1) {
+                e.preventDefault();
+                $('nextBtn').click();
+            } else if (e.key === 'Enter' && !$('exportBtn').disabled) {
+                e.preventDefault();
+                $('exportBtn').click();
+            }
+        });
+
         // Cleanup on page unload
         window.addEventListener('beforeunload', () => {
             if (backgroundImageUrl) {
@@ -1814,4 +2482,3 @@
     </script>
 </body>
 </html>
-                        
